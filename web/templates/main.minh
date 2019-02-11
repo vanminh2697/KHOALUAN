@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    {{ super() }}
+    Index
+{% endblock %}
+
+{%block content%}
+    <li> Minh dep trai </li> 
+    <li>Value 1 is :{{var1}}</li>
+{% endblock %}
