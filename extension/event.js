@@ -13,10 +13,12 @@ chrome.runtime.onMessage.addListener(function(message){
 		
 		function getLink(){
 			var url = message.tabCurrent;
+			if(url == "") return null;
 			var string = regexURL(url);
 			return "/"+string[3] + text + string[5];
 		}
 		function regexURL(url){
+			console.log(url);
 			return url.split(new RegExp('/'));
 		}
 		var className = "a-last";
@@ -43,24 +45,28 @@ chrome.runtime.onMessage.addListener(function(message){
 			});
 		}
 	    async function getData(urlE){
-	    	while(className == 'a-last'){
-	    		const url = host + urlE;
-	    		
-	    		const output = await getHTML(url);
-	    		var parser = new DOMParser();
-			    var html = parser.parseFromString(output, "text/html");
-			    //console.log(html);
-			    var elements = html.querySelectorAll('span.a-size-base.review-text');
-				for(i = 0; i < elements.length; i++){
-				    //console.log(elements[i].innerText);
-				    comments += elements[i].innerText +"\n";
+	    	if(urlE != null){
+		    	while(className == 'a-last'){
+		    		const url = host + urlE;
+		    		
+		    		const output = await getHTML(url);
+		    		var parser = new DOMParser();
+				    var html = parser.parseFromString(output, "text/html");
+				    //console.log(html);
+				    var elements = html.querySelectorAll('span.a-size-base.review-text');
+					for(i = 0; i < elements.length; i++){
+					    //console.log(elements[i].innerText);
+					    comments += elements[i].innerText +"\n";
+					}
+				    className = html.querySelectorAll('li.a-last')[0].className;
+				    if(className == 'a-disabled a-last') break;
+				    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
+					
 				}
-			    className = html.querySelectorAll('li.a-last')[0].className;
-			    if(className == 'a-disabled a-last') break;
-			    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
-				
+				console.log(comments);
+			}else{
+				console.log("không tìm thấy sản phẩm");
 			}
-			console.log(comments);
 			
 		}
 		getData(getLink()).catch(e => console.log(e));
@@ -83,6 +89,7 @@ chrome.runtime.onMessage.addListener(function(message){
 		// url = url + encodeURIComponent(form.outerHTML);
 		// url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
 		// chrome.tabs.create({url: url, active: true});
+		//}
 	}
 });
 var context = "selection";
