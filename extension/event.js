@@ -8,9 +8,6 @@
 chrome.runtime.onMessage.addListener(function(message){
 	console.log("this is addListener");
 	if (message.action == 'submit the form'){
-		console.log("HIHI");
-		//console.log(message.tabCurrent);
-		
 		function getLink(){
 			var url = message.tabCurrent;
 			if(url == "") return null;
@@ -18,7 +15,7 @@ chrome.runtime.onMessage.addListener(function(message){
 			return "/"+string[3] + text + string[5];
 		}
 		function regexURL(url){
-			console.log(url);
+			//console.log(url);
 			return url.split(new RegExp('/'));
 		}
 		var className = "a-last";
@@ -32,7 +29,7 @@ chrome.runtime.onMessage.addListener(function(message){
 				        	//console.log(http.response);
 				          	resolve(http.response)
 				        } else {
-				        	console.log(http.status);
+				        	//console.log(http.status);
 				          	reject(http.status)
 				        }
 				    }
@@ -97,5 +94,4 @@ var title = "Share with Cliptext!";
 var comments = "";
 var host = "https://www.amazon.com";
 var text = "/product-reviews/";
-console.log("this is addListener");
 // var id = chrome.contextMenus.create({"title": title, "contexts": [context], "onclick": onItemClick});
