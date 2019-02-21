@@ -17,7 +17,11 @@ from features import WordPreprocessor
 from evaluation import ATEPCEvaluator, ATEPCNewEvaluator
 from collections import OrderedDict, defaultdict
 from redis import StrictRedis
+import time 
+
+#connect to redis server
 r = StrictRedis(host='localhost', port=6379, db=0)
+
 
 
 from matepc import MATEPC
@@ -215,4 +219,6 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
         #print("F1 test, ATEPC task: ", f1_test)
         for i in range(len(seqs)): 
             r.set(seqs[i],' '.join(ys_pred[i]))
-load_model()
+    time.sleep(0.25)
+if __name__ == "__main__":
+	load_model()

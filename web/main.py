@@ -1,21 +1,23 @@
 from flask import Flask, url_for,request, render_template, make_response
 from redis import StrictRedis
 app = Flask(__name__)
+# connect with database
 
 r = StrictRedis(host='localhost', port=6379, db=0)
 
 @app.route("/", methods = ['GET','POST'])
 def index():
-    # navs = [ 'minh', 'dep', 'trai']
+    # delete all key in redis
+    r.flushall()
+    # save seq to database
     if request.method =="POST":
-        print("THIS IS MY POST")
         text = request.form["text"]
-        var1 = text
-        # print(text)
-        return render_template('main.minh',var1= var1)
-    # if request.method =="GET":
-    #     print("YESSS")
-    #     return render_template('main.minh',var1= var1)
+        k = text.split(".")
+        for i in k:
+            r.set(i,"")
+    
+    var1 = text
+    #return render_template('main.minh',var1= var1)
 
 @app.route("/hello")
 def hello():

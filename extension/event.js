@@ -86,7 +86,7 @@ chrome.runtime.onMessage.addListener(function(message){
 		// url = url + encodeURIComponent(form.outerHTML);
 		// url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
 		// chrome.tabs.create({url: url, active: true});
-		//}
+		
 	}
 });
 var context = "selection";
