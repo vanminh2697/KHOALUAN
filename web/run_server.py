@@ -13,11 +13,15 @@ def index():
     if request.method =="POST":
         text = request.form["text"]
         k = text.split(".")
+        print("len text ",len(k))
         for i in k:
-            r.set(i,"")
-    
+            z = i.split(' ')
+            if len(z) < 83 :
+                print(len(z))
+                r.set(i,"")
+            else: print (len(z))
     var1 = text
-    #return render_template('main.minh',var1= var1)
+    return render_template('main.minh',var1= var1)
 
 @app.route("/hello")
 def hello():

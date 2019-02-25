@@ -80,6 +80,7 @@ def predict_step(sess, model, p, data, data_type, crf_transition_parameters):
         unary_scores, loss = sess.run([model.unary_scores, model.loss], feed_dict)
         losses.append(loss)
         unary_scores_i = unary_scores[0][:X[2][i],:]
+        #print(unary_scores)
         y_pred, _ = tf.contrib.crf.viterbi_decode(unary_scores_i, crf_transition_parameters)
         y_true = list(Y[i][:X[2][i]])
 
@@ -127,6 +128,11 @@ def f1_score(y_true, y_pred):
     f1 = 2 * p * r / (p + r) if correct_preds > 0 else 0
     return f1
 
+
+def pre_precess( X): 
+
+    
+    return X1 
 
 def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200,20,0.0010,30,0.000"):
     DATA_ROOT = os.getcwd() + '/data'
@@ -178,9 +184,9 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
 
 
-    print(len(p.vocab_tag))
-    print(len(p.vocab_word))
-    print(p.max_length)
+    print("len vocab_tag : " ,len(p.vocab_tag))
+    print("len vacab_word : ",len(p.vocab_word))
+    print("max len word: ",p.max_length)
 
     # # ----- Embedding loading -----
 
@@ -193,15 +199,24 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
     model_name = params_str
     X =[]
     Y = []
-    # X.append(list('Speakers Excellent sound'.split(' ')))
+    # test 
+    # X.append(list("I'm aren't Excellent sound  !!!!!!".split(' ')))
     # Y.append(list('O O O'.split()))
     # X_test, Y_test = p.transform(X1=X, Y=Y)
 
     seqs = r.keys('*')
     for i in seqs:
         X.append(list(i.split()))
-        temp = " ".join('O' for i in range(len(i)-1))
-        Y.append(list(temp.split()))
+        print (i.split(" "))
+        temp =[]
+        for j in range(len(i.split())):
+            temp.append('O')
+        #print(len(i.split())," ",len(temp))
+        Y.append(temp)
+    # print (len(X)," ",len(Y))
+    # for i in range(len(X)):
+    #     print(X[i])
+    #     print(Y[i])
     X_test,Y_test = p.transform(X1=X,Y=Y)
 
 
@@ -216,9 +231,10 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
         model.saver.restore(sess, save_path=os.path.join(save_path,model_name_ifold))
         crf_transition_parameters = sess.run(model.crf_transition_parameters)
         f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
-        #print("F1 test, ATEPC task: ", f1_test)
-        for i in range(len(seqs)): 
-            r.set(seqs[i],' '.join(ys_pred[i]))
+        print("F1 test, ATEPC task: ", f1_test)
+        # for i in range(len(seqs)): 
+        #     r.set(seqs[i],' '.join(ys_pred[i]))
+    print("complete")
     time.sleep(0.25)
 if __name__ == "__main__":
 	load_model()

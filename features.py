@@ -99,7 +99,11 @@ class WordPreprocessor(BaseEstimator, TransformerMixin):
             sent_labels = [[self.vocab_tag[l] for l in labels] for labels in Y]
         else:
             sent_labels = None
-
+        for i in range(len(sents)):
+            if len(sents[i])>83: 
+                print(len(X1[i]))
+                print(X1[i])
+                break
         # sequence_length
         sequence_length = np.asarray(lengths)
 

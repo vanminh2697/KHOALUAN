@@ -61,32 +61,41 @@ chrome.runtime.onMessage.addListener(function(message){
 					
 				}
 				console.log(comments);
+				console.log("complete");
+				return comments;
 			}else{
 				console.log("không tìm thấy sản phẩm");
 			}
 			
 		}
-		getData(getLink()).catch(e => console.log(e));
-		//message should contain the selected text and url - ensure that this is the correct message
-		// var url = "data:text/html;charset=utf8,";
-		
-		// function append(key, value){
-		// 	var input = document.createElement('textarea');
-		// 	input.setAttribute('name', key);
-		// 	input.textContent = value;
-		// 	form.appendChild(input);
-		// }
-		
-		// var form = document.createElement('form');
-		// form.method = 'POST';
-		// form.action = 'http://localhost:5000/';
-		// form.style.visibility = "hidden";
-		// append('url', message.url);
-		// append('text', comments);
-		// url = url + encodeURIComponent(form.outerHTML);
-		// url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
-		// chrome.tabs.create({url: url, active: true});
-		
+		function getData2(){
+			return new Promise(function (resolve, reject){
+				resolve(getData(getLink()).catch(e => reject(e)));
+			});
+		}
+		async function upload(){
+			comments = await getData2();
+			//message should contain the selected text and url - ensure that this is the correct message
+			var url = "data:text/html;charset=utf8,";
+			
+			function append(key, value){
+				var input = document.createElement('textarea');
+				input.setAttribute('name', key);
+				input.textContent = value;
+				form.appendChild(input);
+			}
+			
+			var form = document.createElement('form');
+			form.method = 'POST';
+			form.action = 'http://localhost:5000/';
+			form.style.visibility = "hidden";
+			append('url', message.url);
+			append('text', comments);
+			url = url + encodeURIComponent(form.outerHTML);
+			url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
+			chrome.tabs.create({url: url, active: true});
+		}
+		upload().catch(e => console.log(e));
 	}
 });
 var context = "selection";
@@ -94,4 +103,3 @@ var title = "Share with Cliptext!";
 var comments = "";
 var host = "https://www.amazon.com";
 var text = "/product-reviews/";
-// var id = chrome.contextMenus.create({"title": title, "contexts": [context], "onclick": onItemClick});
