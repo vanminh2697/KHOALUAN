@@ -11,12 +11,15 @@ function sendMs() {
 	 			alert("vui lòng đời web load....");
 	 		}
 	   		console.log("this is send message");
-			chrome.runtime.sendMessage({
-				'action': 'submit the form',
-				'url': window.location.href,
-				'selectedText': 'HIHI THIS IS EXTENSION SUSSESSFULL',
-				'tabCurrent' : document.getElementById("url").innerHTML
-			});
+			document.getElementById("click").onclick = function(){send()};
 	 	});
+	});
+}
+function send(){
+	chrome.runtime.sendMessage({
+		'action': 'submit the form',
+		'url': window.location.href,
+		'selectedText': 'HIHI THIS IS EXTENSION SUSSESSFULL',
+		'tabCurrent' : document.getElementById("url").innerHTML
 	});
 }
