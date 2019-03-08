@@ -39,6 +39,6 @@ def hello():
     return "hello"
 @app.route("/user/<id>", methods = ['GET','POST'])
 def finduserid(id):
-    print request.method
-    print url_for('finduserid',id=11)
+    print(request.method)
+    print(url_for('finduserid',id=11))
     return "hello user id :{0}".format(id)
