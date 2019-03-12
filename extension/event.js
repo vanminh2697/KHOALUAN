@@ -94,6 +94,7 @@ chrome.runtime.onMessage.addListener(function(message){
 			form.style.visibility = "hidden";
 			append('url', message.url);
 			append('text', comments);
+			comments = "";
 			url = url + encodeURIComponent(form.outerHTML);
 			url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
 			chrome.tabs.create({url: url, active: true});

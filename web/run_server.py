@@ -3,7 +3,7 @@ from redis import StrictRedis
 app = Flask(__name__)
 # connect with database
 
-r = StrictRedis(host='localhost', port=6379, db=0)
+#r = StrictRedis(host='localhost', port=6379, db=0)
 def pre_process(X):
     # handing double space
     string = []
@@ -14,7 +14,7 @@ def pre_process(X):
 @app.route("/", methods = ['GET','POST'])
 def index():
     # delete all key in redis
-    r.flushall()
+    #r.flushall()
 
     # save seq to database
     if request.method =="POST":
@@ -29,7 +29,7 @@ def index():
                 #print(len(z))
                 string = " ".join(z)
                 print(string)
-                r.set(string,"")
+                #r.set(string,"")
             # else: print (len(z))
     var1 = text
     return render_template('main.minh',var1= var1)
