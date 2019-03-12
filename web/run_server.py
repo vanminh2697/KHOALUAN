@@ -4,22 +4,33 @@ app = Flask(__name__)
 # connect with database
 
 r = StrictRedis(host='localhost', port=6379, db=0)
-
+def pre_process(X):
+    # handing double space
+    string = []
+    for i in X: 
+        if i != "" and i !="\n":
+            string.append(i)
+    return string
 @app.route("/", methods = ['GET','POST'])
 def index():
     # delete all key in redis
     r.flushall()
+
     # save seq to database
     if request.method =="POST":
         text = request.form["text"]
-        k = text.split(".")
+        k = text.split(". ")
         print("len text ",len(k))
         for i in k:
-            z = i.split(' ')
-            if len(z) < 83 :
-                print(len(z))
-                r.set(i,"")
-            else: print (len(z))
+            tempt = i.split(" ")
+            z = pre_process(tempt)
+            # print(z)
+            if len(z) < 83 and len(z)>1 :
+                #print(len(z))
+                string = " ".join(z)
+                print(string)
+                r.set(string,"")
+            # else: print (len(z))
     var1 = text
     return render_template('main.minh',var1= var1)
 
