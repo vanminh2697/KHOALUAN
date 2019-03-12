@@ -6,5 +6,9 @@
 {% endblock %}
 
 {%block content%}
-    <li>Value 1 is :{{var1}}</li>
+{%for i in var1 %} 
+    <li>{{i.key}}</li>
+    <li>{{i.value}}</li>
+    
+{% endfor %}
 {% endblock %}
