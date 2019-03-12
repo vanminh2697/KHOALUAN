@@ -22,6 +22,7 @@ chrome.runtime.onMessage.addListener(function(message){
 		
 		function getHTML(url){
 			return new Promise(function(resolve , reject){
+				//console.log(url);
 				const http = new XMLHttpRequest();
 				http.onreadystatechange = function() {
 					if (http.readyState === 4) {
@@ -43,9 +44,10 @@ chrome.runtime.onMessage.addListener(function(message){
 		}
 	    async function getData(urlE){
 	    	if(urlE != null){
+	    		
 		    	while(className == 'a-last'){
 		    		const url = host + urlE;
-		    		
+		    		console.log(url);
 		    		const output = await getHTML(url);
 		    		var parser = new DOMParser();
 				    var html = parser.parseFromString(output, "text/html");
@@ -55,6 +57,7 @@ chrome.runtime.onMessage.addListener(function(message){
 					    //console.log(elements[i].innerText);
 					    comments += elements[i].innerText +"\n";
 					}
+					if(html.querySelectorAll('li.a-last').length == 0) break;
 				    className = html.querySelectorAll('li.a-last')[0].className;
 				    if(className == 'a-disabled a-last') break;
 				    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
@@ -91,6 +94,7 @@ chrome.runtime.onMessage.addListener(function(message){
 			form.style.visibility = "hidden";
 			append('url', message.url);
 			append('text', comments);
+			comments = "";
 			url = url + encodeURIComponent(form.outerHTML);
 			url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
 			chrome.tabs.create({url: url, active: true});

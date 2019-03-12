@@ -4,7 +4,7 @@ import time
 app = Flask(__name__)
 # connect with database
 
-r = StrictRedis(host='localhost', port=6379, db=0)
+#r = StrictRedis(host='localhost', port=6379, db=0)
 def pre_process(X):
     # handing double space
     string = []
@@ -21,9 +21,10 @@ def caculation(keys,results ):
 @app.route("/", methods = ['GET','POST'])
 def index():
     # delete all key in redis
-    r.flushall()
+    #r.flushall()
 
     # save seq to database
+<<<<<<< HEAD
     text = 'It is supper flast and outstanding graphics. I enjoy having apple products. I never go back to a pc again. sound is not good. keyboard is not good'
     # if request.method =="POST":
     #     text = request.form["text"]
@@ -63,6 +64,23 @@ def index():
                 break 
         x +=1 
         time.sleep(1)
+=======
+    if request.method =="POST":
+        text = request.form["text"]
+        k = text.split(". ")
+        print("len text ",len(k))
+        for i in k:
+            tempt = i.split(" ")
+            z = pre_process(tempt)
+            # print(z)
+            if len(z) < 83 and len(z)>1 :
+                #print(len(z))
+                string = " ".join(z)
+                print(string)
+                #r.set(string,"")
+            # else: print (len(z))
+    var1 = text
+>>>>>>> 6d0e2b7a9ba17476a2b2301d317bee62cabcaeca
     return render_template('main.minh',var1= var1)
 
 @app.route("/hello")
