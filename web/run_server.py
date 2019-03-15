@@ -1,16 +1,32 @@
 from flask import Flask, url_for,request, render_template, make_response
 from redis import StrictRedis
+import re
+import codecs
 app = Flask(__name__)
 # connect with database
 
 #r = StrictRedis(host='localhost', port=6379, db=0)
-def pre_process(X):
+def pre_process(str):
     # handing double space
-    string = []
-    for i in X: 
-        if i != "" and i !="\n":
-            string.append(i)
-    return string
+    
+    str = re.sub("’", "'", str)
+    str = re.sub(r'([-()#$%^&*]+)', "", str)
+    str = re.sub(r'([,?!.:]{2,})', r'.', str)
+    str = re.sub(r'([,?!.:])', r' \1 ', str)
+    str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
+    str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
+    str = re.sub(r'[^\x00-\x7f]', "", str)
+    str = re.sub(r'\"([\s\w]+)\"', r'\1', str)
+    str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
+    str = re.sub("\"", " inch", str)
+    str = re.sub("\/", " / ", str)
+
+    #print(str)
+    t = str.split();
+    #for i in X: 
+        #if i != "" and i !="\n":
+            #string.append(i)
+    return t
 @app.route("/", methods = ['GET','POST'])
 def index():
     # delete all key in redis
@@ -22,9 +38,10 @@ def index():
         k = text.split(". ")
         print("len text ",len(k))
         for i in k:
-            tempt = i.split(" ")
-            z = pre_process(tempt)
+            #tempt = i.split(" ")
+            z = pre_process(i)
             # print(z)
+            if len(z) < 2: string = " ".join(z)
             if len(z) < 83 and len(z)>1 :
                 #print(len(z))
                 string = " ".join(z)
