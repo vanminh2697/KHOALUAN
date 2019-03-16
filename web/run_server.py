@@ -1,18 +1,20 @@
 from flask import Flask, url_for,request, render_template, make_response
-from redis import StrictRedis
+# from redis import StrictRedis
 import time 
 import numpy 
+import re
+import codecs
 app = Flask(__name__)
 # connect with database
 
-r = StrictRedis(host='localhost', port=6379, db=0)
-def pre_process(X):
-    # handing double space
-    string = []
-    for i in X: 
-        if i != "" and i !="\n":
-            string.append(i)
-    return string
+# r = StrictRedis(host='localhost', port=6379, db=0)
+# def pre_process(X):
+#     # handing double space
+#     string = []
+#     for i in X: 
+#         if i != "" and i !="\n":
+#             string.append(i)
+#     return string
 
 def caculation(keys,results):
     Aspects = []
@@ -60,58 +62,73 @@ def caculation(keys,results):
     
     for i in range(n):
         print (Aspects[i],Value[i][0]/Value[i][3],Value[i][1]/Value[i][3],Value[i][2]/Value[i][3])
-
     return Aspects
 
+# def pre_process(str):
+#     # handing double space
+#     str = re.sub(r'([-()#$%^&*]+)', "", str)
+#     str = re.sub(r'([,?!.:]{2,})', r'.', str)
+#     str = re.sub(r'([,?!.:])', r' \1 ', str)
+#     str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
+#     str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
+#     str = re.sub(r'[^\x00-\x7f]', "", str)
+#     str = re.sub(r'\"([\s\w]+)\"', r'\1', str)
+#     str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
+#     str = re.sub("\"", " inch", str)
+#     # str = re.sub("\/", " / ", str)
+#     t = str.split()
+#     #for i in X: 
+#         #if i != "" and i !="\n":
+#             #string.append(i)
+#     return t
 
 @app.route("/", methods = ['GET','POST'])
 def index():
     # delete all key in redis
-    r.flushall()
-
+    # r.flushall()
+    A = []
     # save seq to database
-    text = 'It is supper flast and outstanding graphics. I enjoy having apple products 9. I never go back to a pc again. sound is not good. battery life is good. graphics is bad'
-
-    # if request.method =="POST":
-    #     text = request.form["text"]
-    #     k = text.split(". ")
-    #     print("len text ",len(k))
-    #     for i in k:
-    #         tempt = i.split(" ")
-    #         z = pre_process(tempt)
-    #         # print(z)
-    #         if len(z) < 83 and len(z)>1 :
-    #             #print(len(z))
-    #             string = " ".join(z)
-    #             print(string)
-    #             r.set(string,"")
-    #         # else: print (len(z))
-    # var1 = text 
+    # text = 'It is supper flast and outstanding graphics. I enjoy having apple products 9. I never go back to a pc again. sound is not good. battery life is good. graphics is bad'
+    if request.method =="POST":
+        text = request.form["text"]
+        # print(text)
+        k = text.split(". ")
+        print("len text ",len(k))
+        for i in k:
+            tempt = i.split(" ")
+            print( i)
+            # z = pre_process(tempt)
+            A.append(i)
+            # print(z)
+            # if len(z) < 83 and len(z)>1:
+            #     string = " ".join(z)
+            #     print(string)
+                # r.set(string,"")
+    var1 = A
     
+    # k = text.split(". ")
+    # for i in k:
+    #     r.set(i,"")
 
-    k = text.split(". ")
-    for i in k:
-        r.set(i,"")
-
-    keys = r.keys('*')
-    x = 0
-    while True:
-        temp = r.get(keys[0])
-        if (len(temp.split())>1):
-            results = []
-            value = []
-            for i in keys: 
-                rs = r.get(i)
-                temp = {"key": i ,"value": rs}
-                value.append(rs)
-                results.append(temp)
-            if len(results)>0:
-                var1 = results
-                break 
-        x +=1 
-        time.sleep(1)
-    A = caculation(keys, value)
-    return render_template('main.minh',var1= var1,var2 =A)
+    # keys = r.keys('*')
+    # x = 0
+    # while True:
+    #     temp = r.get(keys[0])
+    #     if (len(temp.split())>1):
+    #         results = []
+    #         value = []
+    #         for i in keys: 
+    #             rs = r.get(i)
+    #             temp = {"key": i ,"value": rs}
+    #             value.append(rs)
+    #             results.append(temp)
+    #         if len(results)>0:
+    #             var1 = results
+    #             break 
+    #     x +=1 
+    #     time.sleep(1)
+    # A = caculation(keys, value)
+    return render_template('main.minh',var1= var1)
 
 @app.route("/hello")
 def hello():
