@@ -8,13 +8,16 @@
     "content_scripts":[
      {
       "matches":["http://*/*","https://*/*"],
-      "js":["event.js", "run.js"]
+      "js":["event.js", "run.js","testjs.js"]
      }
     ],
     "permissions" : [
-    
+      
     ],
     "background": {
       "scripts": ["event.js"]
+    },
+    "externally_connectable": {
+      "matches": ["http://localhost:5000/"]
     }
    }

@@ -1,12 +1,8 @@
-// console.log("HIHI")
-// onItemclick()
-// function onItemclick(){
-// 	console.log("HIHI");
-//     chrome.tabs.executeScript(null, { file: 'content.js' });
-// }
-
 chrome.runtime.onMessage.addListener(function(message){
 	console.log("this is addListener");
+	if (message.action== "hellosever"){
+		Console.log("hello this is from Server")
+	}
 	if (message.action == 'submit the form'){
 		function getLink(){
 			var url = message.tabCurrent;
@@ -15,7 +11,7 @@ chrome.runtime.onMessage.addListener(function(message){
 			return "/"+string[3] + text + string[5];
 		}
 		function regexURL(url){
-			//console.log(url);
+			//console.log(url)
 			return url.split(new RegExp('/'));
 		}
 		var className = "a-last";

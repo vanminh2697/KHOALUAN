@@ -6,8 +6,11 @@
 {% endblock %}
 
 {%block content%}
-
-{%for k in var1 %}
+{%for i in var1 %} 
+    <li>{{i.key}}</li>
+    <li>{{i.value}}</li>
+{% endfor %}
+{%for k in var2 %}
     <li>{{k}}</li>
 {% endfor %}
 {% endblock %}
