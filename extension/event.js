@@ -1,8 +1,9 @@
+// window.onload = function() {
+// 	document.getElementById("demo").innerHTML = "hihi";
+// }
 chrome.runtime.onMessage.addListener(function(message){
 	console.log("this is addListener");
-	if (message.action== "hellosever"){
-		Console.log("hello this is from Server")
-	}
+	
 	if (message.action == 'submit the form'){
 		function getLink(){
 			var url = message.tabCurrent;
@@ -57,10 +58,9 @@ chrome.runtime.onMessage.addListener(function(message){
 				    className = html.querySelectorAll('li.a-last')[0].className;
 				    if(className == 'a-disabled a-last') break;
 				    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
-					
 				}
 				console.log(comments);
-				console.log("complete");
+				// console.log("complete");
 				return comments;
 			}else{
 				console.log("không tìm thấy sản phẩm");
@@ -96,6 +96,21 @@ chrome.runtime.onMessage.addListener(function(message){
 			chrome.tabs.create({url: url, active: true});
 		}
 		upload().catch(e => console.log(e));
+
+
+		// function get_Data_from_server(){
+		// 	var req = new XMLHttpRequest();
+		// 	req.open("GET", "http://localhost:5000/", false);
+		// 	req.setRequestHeader("Content-Type", "application/json; charset=UTF-8")
+		// 	req.send(null);
+		// 	// console.log(req.responseText);
+		// 	text = req.responseText 
+		// 	chrome.runtime.sendMessage({
+		// 		'action': 'hihi',
+		// 		'data' : text
+		// 	})
+		// }
+		// get_Data_from_server() 
 	}
 });
 var context = "selection";

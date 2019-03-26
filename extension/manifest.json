@@ -8,11 +8,11 @@
     "content_scripts":[
      {
       "matches":["http://*/*","https://*/*"],
-      "js":["event.js", "run.js","testjs.js"]
+      "js":["run.js"]
      }
     ],
     "permissions" : [
-      
+      "http://localhost:5000/"
     ],
     "background": {
       "scripts": ["event.js"]

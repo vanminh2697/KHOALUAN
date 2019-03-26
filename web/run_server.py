@@ -60,65 +60,58 @@ r = StrictRedis(host='localhost', port=6379, db=0)
 #         print (Aspects[i],Value[i][0]/Value[i][3],Value[i][1]/Value[i][3],Value[i][2]/Value[i][3])
 #     return Aspects
 
-# def pre_process(str):
-#     # handing double space
-#     str = re.sub(r'([-()#$%^&*]+)', "", str)
-#     str = re.sub(r'([,?!.:]{2,})', r'.', str)
-#     str = re.sub(r'([,?!.:])', r' \1 ', str)
-#     str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
-#     str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
-#     str = re.sub(r'[^\x00-\x7f]', "", str)
-#     str = re.sub(r'\"([\s\w]+)\"', r'\1', str)
-#     str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
-#     str = re.sub("\"", " inch", str)
-#     # str = re.sub("\/", " / ", str)
-#     t = str.split()
-#     #for i in X: 
-#         #if i != "" and i !="\n":
-#             #string.append(i)
-#     return t
+def pre_process(str):
+    # # handing double space
+    str = re.sub(r'([-()#$%^&*]+)', "", str)
+    str = re.sub(r'([,?!.:]{2,})', r'.', str)
+    str = re.sub(r'([,?!.:])', r' \1 ', str)
+    str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
+    str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
+    str = re.sub(r'[^\x00-\x7f]', "", str)
+    str = re.sub(r'\"([\s\w]+)\"', r'\1', str)
+    str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
+    str = re.sub("\"", " inch", str)
+    str = re.sub("/", " / ", str)
+    t = str.split()
+    t = " ".join(t)
+    # #for i in X: 
+    #     #if i != "" and i !="\n":
+    #         #string.append(i)
+    return t
 
     
 @app.route("/", methods = ['GET','POST'])
 def index():
     # test for extension
-    # ctx = execjs.compile(""" 
-    # function send(){
-    #     chrome.runtime.sendMessage(editorExtensionId, {openUrlInEditor: url},
-    #         function(response) {
-    #             if (!response.success)
-    #             handleError(url);
-    #     })
-    # }
-    # """)
-    # ctx.call("send") 
 
-    execjs.get().name 
-    os.environ["EXECJS_RUNTIME"] = "test"
-    return render_template(execjs.get().name)
 
     # delete all key in redis
-    # r.flushall()
-    # A = []
-    # # save seq to database
+
+    r.flushall()
+
+    A = []
+    # save seq to database
     
-    # if request.method =="POST":
-    #     text = request.form["text"]
-    #     # print(text)
-    #     k = text.split(". ")
-    #     print("len text ",len(k))
-    #     for i in k:
-    #         tempt = i.split(" ")
-    #         print( i)
-    #         # z = pre_process(tempt)
-    #         A.append(i)
-    #         # print(z)
-    #         # if len(z) < 83 and len(z)>1:
-    #         #     string = " ".join(z)
-    #         #     print(string)
-    #             # r.set(string,"")
-    # text = 'It is supper flast and outstanding graphics. I enjoy having apple products 9. I never go back to a pc again. sound is not good. battery life is good. graphics is bad'
-    # var1 = text
+    if request.method =="POST":
+        text = request.form["text"]
+        print(text)
+        k = text.split(". ")
+        print("len text ",len(k))
+        for i in k:
+            z = pre_process(i)
+            z = z.split('. ')
+            if len(z) > 1:
+                for j in z: 
+                    A.append(j.split(" "))
+            else:
+                A.append(z)
+    text = 'It is supper flast and outstanding graphics. I enjoy having apple products 9. I never go back to a pc again. sound is not good. battery life is good. graphics is bad'
+    print ( A)
+    for i in A:
+        if len(i) <83 and len(i)> 1:
+            string = " ".join(z)
+            r.set(string,"")
+    var1 = text
     
     # k = text.split(". ")
     # for i in k:
@@ -141,9 +134,13 @@ def index():
     #             break 
     #     x +=1 
     #     time.sleep(1)
+    data = "This is a Server"
+    if request.method =="GET":
+        return data
+    # if request.method =="POST":
+    #     print "hihi"
     # A = caculation(keys, value)
-    # return render_template('main.minh',var1= var1, var = A)
-    # # return jsonify(A)
+    return render_template('main.minh',var1= var1, var = A)
 
 @app.route("/hello")
 def hello():

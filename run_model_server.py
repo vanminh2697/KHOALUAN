@@ -239,7 +239,7 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
                     Y = []
                     for i in seqs:
                         X.append(list(i.split()))
-                        temp = " ".join('O' for i in range(len(i)-1))
+                        temp = " ".join('O' for i in range(len(i.split())-1))
                         Y.append(list(temp.split()))
                         X_test,Y_test = p.transform(X1=X,Y=Y)
                     data = create_data_object(X_test, Y_test)
