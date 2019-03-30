@@ -6,59 +6,75 @@ import re
 import codecs
 import execjs
 import os
+import json
 app = Flask(__name__)
 # connect with database
 
 r = StrictRedis(host='localhost', port=6379, db=0)
 
 
-# def caculation(keys,results):
-#     Aspects = []
-#     # get aspect
-#     for i in range(len(keys)):
-#         string = keys[i].split(' ')
-#         rs = results[i].split(' ')
-#         j = 0
-#         while j < len(rs):
-#             if rs[j] != 'O':
-#                 tempt = []
-#                 while j < len(rs) and rs[j] !='O':
-#                    tempt.append(string[j])
-#                    j += 1 
-#                 aspect  = " ".join(tempt)
-#                 if aspect not in Aspects: 
-#                     Aspects.append(aspect)
-#             j +=1
-    
-#     # calucation Value
-#     # 1: positive 
-#     # 0: Negative 
-#     # 2: neutral
-#     n = len(Aspects)
-#     m = 3
-#     Value = numpy.zeros((n, m+1))
-#     for i in range(n):
-#         name = Aspects[i].split(" ")[0]
-#         for j in range(len(keys)):
-#             seq = keys[j].split(' ')
-#             if name in seq:
-#                 index = seq.index(name)
-#                 rs = results[j].split(' ')
-#                 pol = rs[index].split('-')[1]
-#                 # print(pol)
-#                 if pol == 'POS':
-#                     Value[i][1] += 1
-#                     Value[i][3] += 1
-#                 elif pol == 'NEG':
-#                     Value[i][0] += 1
-#                     Value[i][3] += 1
-#                 else :
-#                     Value[i][2] += 1
-#                     Value[i][3] += 1
-    
-#     for i in range(n):
-#         print (Aspects[i],Value[i][0]/Value[i][3],Value[i][1]/Value[i][3],Value[i][2]/Value[i][3])
-#     return Aspects
+def caculation(keys,results):
+    Aspects = []
+
+    # get aspect
+
+    for i in range(len(keys)):
+        string = keys[i].split(' ')
+        rs = results[i].split(' ')
+        j = 0
+        while j < len(rs):
+            if rs[j] != 'O':
+                tempt = []
+                while j < len(rs) and rs[j] !='O':
+                   tempt.append(string[j])
+                   j += 1 
+                aspect  = " ".join(tempt)
+                if aspect not in Aspects: 
+                    Aspects.append(aspect)
+            j +=1
+    # print(Aspects)
+    # calucation Value
+    # 1: positive 
+    # 0: Negative 
+    # 2: neutral
+    n = len(Aspects)
+    m = 3
+    Value = numpy.zeros((n, m+1))
+    for i in range(n):
+        name = Aspects[i].split(' ')[0]
+        for j in range(len(keys)):
+            seq = keys[j]
+            seq_split = seq.split(' ')
+            if Aspects[i] in seq and name in seq_split:
+                index = seq_split.index(name)
+                rs = results[j].split(' ')
+                # print ("index ",index)
+                # print(len(seq))
+                # print (seq)
+                # print (len(results[j].split(' ')))
+                # print (results[j])
+                # print (rs[index])
+                if rs[index] !="O":
+                    pol = rs[index].split('-')[1]
+                    # print(pol)
+                    if pol == 'POS':
+                        Value[i][1] += 1
+                        Value[i][3] += 1
+                    elif pol == 'NEG':
+                        Value[i][0] += 1
+                        Value[i][3] += 1
+                    else :
+                        Value[i][2] += 1
+                        Value[i][3] += 1
+    json_results = [] 
+    for i in range(n):
+        aspect = Aspects[i]
+        x = Value[i][0]/Value[i][3]
+        y = Value[i][1]/Value[i][3]
+        z = Value[i][2]/Value[i][3]
+        temp = {"aspect": Aspects[i],"POS": x, "NEG": y, "NEU": z }
+        json_results.append(temp)
+    return json_results
 
 def pre_process(str):
     # # handing double space
@@ -73,17 +89,15 @@ def pre_process(str):
     str = re.sub("\"", " inch", str)
     str = re.sub("/", " / ", str)
     t = str.split()
-    t = " ".join(t)
+    k  = " ".join(t)
     # #for i in X: 
     #     #if i != "" and i !="\n":
     #         #string.append(i)
-    return t
+    return k
 
     
 @app.route("/", methods = ['GET','POST'])
 def index():
-    # test for extension
-
 
     # delete all key in redis
 
@@ -92,55 +106,49 @@ def index():
     A = []
     # save seq to database
     
-    if request.method =="POST":
-        text = request.form["text"]
+    if request.method == "POST":
+        text = request.form["data"]
         print(text)
-        k = text.split(". ")
-        print("len text ",len(k))
-        for i in k:
-            z = pre_process(i)
-            z = z.split('. ')
-            if len(z) > 1:
-                for j in z: 
-                    A.append(j.split(" "))
-            else:
-                A.append(z)
-    text = 'It is supper flast and outstanding graphics. I enjoy having apple products 9. I never go back to a pc again. sound is not good. battery life is good. graphics is bad'
-    print ( A)
-    for i in A:
-        if len(i) <83 and len(i)> 1:
-            string = " ".join(z)
-            r.set(string,"")
-    var1 = text
-    
-    # k = text.split(". ")
-    # for i in k:
-    #     r.set(i,"")
+        if text != '':
+            k = text.split(". ")
+            print("len text ",len(k))       
+            for i in k:
+                z = pre_process(i)
+                z = z.split('. ')
+                if len(z) > 1:
+                    for j in z: 
+                        A.append(j.split(' '))
+                else:
+                    A.append(z[0].split(' '))
 
-    # keys = r.keys('*')
-    # x = 0
-    # while True:
-    #     temp = r.get(keys[0])
-    #     if (len(temp.split())>1):
-    #         results = []
-    #         value = []
-    #         for i in keys: 
-    #             rs = r.get(i)
-    #             temp = {"key": i ,"value": rs}
-    #             value.append(rs)
-    #             results.append(temp)
-    #         if len(results)>0:
-    #             var1 = results
-    #             break 
-    #     x +=1 
-    #     time.sleep(1)
-    data = "This is a Server"
-    if request.method =="GET":
-        return data
-    # if request.method =="POST":
-    #     print "hihi"
-    # A = caculation(keys, value)
-    return render_template('main.minh',var1= var1, var = A)
+            for i in A:
+                size = len(i)
+                if size <83 and size > 1:
+                    string = " ".join(i)
+                    r.set(string,"")
+            
+            keys = r.keys('*')
+            x = 0
+            value = []
+            if(len(keys)> 0):
+                while True:
+                    temp = r.get(keys[0])
+                    if (len(temp.split())>1):
+                        results = []
+                        for i in keys: 
+                            rs = r.get(i)
+                            temp = {"key": i ,"value": rs}
+                            value.append(rs)
+                            results.append(temp)
+                        if len(results)>0:
+                            var1 = results
+                            break 
+                    x +=1 
+                    time.sleep(1)
+            json_results = caculation(keys, value)
+            return json.dumps(json_results)
+        else: 
+            return "Can not find reviews from Web page"
 
 @app.route("/hello")
 def hello():

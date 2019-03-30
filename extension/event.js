@@ -1,6 +1,3 @@
-// window.onload = function() {
-// 	document.getElementById("demo").innerHTML = "hihi";
-// }
 chrome.runtime.onMessage.addListener(function(message){
 	console.log("this is addListener");
 	
@@ -65,7 +62,6 @@ chrome.runtime.onMessage.addListener(function(message){
 			}else{
 				console.log("không tìm thấy sản phẩm");
 			}
-			
 		}
 		function getData2(){
 			return new Promise(function (resolve, reject){
@@ -74,43 +70,20 @@ chrome.runtime.onMessage.addListener(function(message){
 		}
 		async function upload(){
 			comments = await getData2();
-			//message should contain the selected text and url - ensure that this is the correct message
-			var url = "data:text/html;charset=utf8,";
-			
-			function append(key, value){
-				var input = document.createElement('textarea');
-				input.setAttribute('name', key);
-				input.textContent = value;
-				form.appendChild(input);
-			}
-			
-			var form = document.createElement('form');
-			form.method = 'POST';
-			form.action = 'http://localhost:5000/';
-			form.style.visibility = "hidden";
-			append('url', message.url);
-			append('text', comments);
-			comments = "";
-			url = url + encodeURIComponent(form.outerHTML);
-			url = url + encodeURIComponent('<script>document.forms[0].submit();</script>');
-			chrome.tabs.create({url: url, active: true});
+			var req = new XMLHttpRequest();
+			req.open('POST', 'http://localhost:5000/', false);
+			req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+			req.send("data=" + comments);
+			var text = req.responseText
+			console.log(text)
+			comments = ""
+			chrome.runtime.sendMessage({
+				'action': 'hihi',
+				'data' : text
+			})
+
 		}
-		upload().catch(e => console.log(e));
-
-
-		// function get_Data_from_server(){
-		// 	var req = new XMLHttpRequest();
-		// 	req.open("GET", "http://localhost:5000/", false);
-		// 	req.setRequestHeader("Content-Type", "application/json; charset=UTF-8")
-		// 	req.send(null);
-		// 	// console.log(req.responseText);
-		// 	text = req.responseText 
-		// 	chrome.runtime.sendMessage({
-		// 		'action': 'hihi',
-		// 		'data' : text
-		// 	})
-		// }
-		// get_Data_from_server() 
+		upload()
 	}
 });
 var context = "selection";

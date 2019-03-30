@@ -1,6 +1,8 @@
 import execjs
 import os 
 
-execjs.get().name 
-os.environ["EXECJS_RUNTIME"] = "test"
-print(execjs.get().name)
+string = "minh dep trai "
+k = string.split(' ')
+x = "minh xxx"
+if x in string: print True
+else: print False

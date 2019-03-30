@@ -25,29 +25,19 @@ function send(){
 	});
 	var text =  chrome.runtime.onMessage.addListener(function(message){
 		if (message.action == 'hihi'){
-			var result = [
-				{
-					aspect: "Keys",
-					positive: "50%",
-					negative: "10%",
-					neutral: "40",
-				},
-				{
-					aspect: "Pin",
-					positive: "10%",
-					negative: "10%",
-					neutral: "100%",
-				}
-			]
-			text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
-			for(var i = 0;i<result.length; i++){
-				text += "<tr> <td>"+ result[i].aspect+ "<td>" +result[i].positive +" <td>"+ result[i].negative+ "</td> <td>"+ result[i].neutral +"</td> </tr>" ;
+			var server = message.data ;
+			console.log(server)
+			if(server == "Can not find reviews from Web page"){
+				text = "<dt>" + server+"</dt>"
 			}
-			// var k = message.data 
-			document.getElementById("result").innerHTML = text;
+			else {
+				var result = JSON.parse(server)
+				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
+				for(var i = 0;i<result.length; i++){
+					text += "<tr> <td>"+ result[i].aspect+ "<td>" +result[i].POS +" <td>"+ result[i].NEG+ "</td> <td>"+ result[i].NEU +"</td> </tr>" ;
+				}
+			}
+			document.getElementById("result").innerHTML = text ;
 		}
-		// console.log(k)
 	});
-	console.log(text)
-	return text
 }

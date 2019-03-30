@@ -11,6 +11,6 @@
     <li>{{i.value}}</li>
 {% endfor %}
 {%for k in var2 %}
-    <li>{{k}}</li>
+    <li>{{k.aspect,k.POS,k.NEG,k.NEU}}</li>
 {% endfor %}
 {% endblock %}
