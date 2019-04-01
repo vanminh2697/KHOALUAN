@@ -36,6 +36,23 @@ chrome.runtime.onMessage.addListener(function(message){
 				http.send();
 			});
 		}
+	     async function getImageAndName(urlE){
+			const url = host + urlE;
+    		console.log(url);
+    		const output = await getHTML(url);
+    		var parser = new DOMParser();
+		    var html = parser.parseFromString(output, "text/html");
+		    //console.log(html);
+		    var name = html.querySelectorAll('h1.a-size-large.a-text-ellipsis')[0].outerText;
+		    //var elements = html.getElementsByClassName('a-size-large');
+		    //var elements = html.getElementById('main-video-container');
+		    chrome.runtime.sendMessage({
+				'action': 'haha',
+				'data' : name
+			})
+
+		}
+		getImageAndName(getLink());
 	    async function getData(urlE){
 	    	if(urlE != null){
 	    		
