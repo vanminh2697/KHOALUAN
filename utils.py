@@ -80,8 +80,8 @@ def _pad_sequences(sequences, pad_tok, max_length):
         seq_ = seq[:max_length] + [pad_tok] * max(max_length - len(seq), 0)
         sequence_padded += [seq_]
         if max_length < len(seq):
-            print(seq)
-            print(len(seq))
+            # print(seq)
+            # print(len(seq))
             raise Exception("len(seq) > max_length")
     return sequence_padded
 

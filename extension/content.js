@@ -26,18 +26,22 @@ function send(){
 	var text =  chrome.runtime.onMessage.addListener(function(message){
 		if (message.action == 'hihi'){
 			var server = message.data ;
+			console.log(message.action)
 			console.log(server)
 			if(server == "Can not find reviews from Web page"){
 				text = "<dt>" + server+"</dt>"
 			}
-			else {
-				var result = JSON.parse(server)
+			else{
+				
+				var result = JSON.parse(server);
+				document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
-					text += "<tr> <td>"+ result[i].aspect+ "<td>" +result[i].POS +" <td>"+ result[i].NEG+ "</td> <td>"+ result[i].NEU +"</td> </tr>" ;
+					text += "<tr> <td>"+ result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"% </td> </tr>" ;
 				}
 			}
 			document.getElementById("result").innerHTML = text ;
+			
 		}
 	});
 }

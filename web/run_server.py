@@ -39,7 +39,10 @@ def caculation(keys,results):
     # 2: neutral
     n = len(Aspects)
     m = 3
+   
     Value = numpy.zeros((n, m+1))
+    # for i in range(n):
+    #     Value[i][3] = 1
     for i in range(n):
         name = Aspects[i].split(' ')[0]
         for j in range(len(keys)):
@@ -48,12 +51,6 @@ def caculation(keys,results):
             if Aspects[i] in seq and name in seq_split:
                 index = seq_split.index(name)
                 rs = results[j].split(' ')
-                # print ("index ",index)
-                # print(len(seq))
-                # print (seq)
-                # print (len(results[j].split(' ')))
-                # print (results[j])
-                # print (rs[index])
                 if rs[index] !="O":
                     pol = rs[index].split('-')[1]
                     # print(pol)
@@ -69,10 +66,11 @@ def caculation(keys,results):
     json_results = [] 
     for i in range(n):
         aspect = Aspects[i]
-        x = Value[i][0]/Value[i][3]
-        y = Value[i][1]/Value[i][3]
-        z = Value[i][2]/Value[i][3]
-        temp = {"aspect": Aspects[i],"POS": x, "NEG": y, "NEU": z }
+        # if (Value[i][3]!=0):
+        x = round((Value[i][0]/Value[i][3])*100)
+        y = round((Value[i][1]/Value[i][3])*100)
+        z = round((Value[i][2]/Value[i][3])*100)
+        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z}
         json_results.append(temp)
     return json_results
 
@@ -141,20 +139,11 @@ def index():
                             value.append(rs)
                             results.append(temp)
                         if len(results)>0:
-                            var1 = results
                             break 
                     x +=1 
                     time.sleep(1)
             json_results = caculation(keys, value)
+            print(json_results)
             return json.dumps(json_results)
         else: 
             return "Can not find reviews from Web page"
-
-@app.route("/hello")
-def hello():
-    return "hello"
-@app.route("/user/<id>", methods = ['GET','POST'])
-def finduserid(id):
-    print(request.method)
-    print(url_for('finduserid',id=11))
-    return "hello user id :{0}".format(id)

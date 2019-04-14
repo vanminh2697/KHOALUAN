@@ -38,7 +38,6 @@ chrome.runtime.onMessage.addListener(function(message){
 		}
 	    async function getData(urlE){
 	    	if(urlE != null){
-	    		
 		    	while(className == 'a-last'){
 		    		const url = host + urlE;
 		    		console.log(url);
@@ -81,7 +80,6 @@ chrome.runtime.onMessage.addListener(function(message){
 				'action': 'hihi',
 				'data' : text
 			})
-
 		}
 		upload()
 	}

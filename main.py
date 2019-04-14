@@ -185,9 +185,24 @@ def train_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,20
     X1_train_valid = sents1
     Y_train_valid = labels1
     # test set
-    sents2, _, _, _, labels2, preds2 = collect_data_infor_from_tsv(test_path, keep_conflict=True)
-    X1_test = sents2
-    Y_test_origin = labels2
+    # sents2, _, _, _, labels2,preds2 = collect_data_infor_from_tsv(test_path, keep_conflict=True)
+    # X1_test = sents2
+    # Y_test_origin = labels2
+
+    ## Test ###
+    str1 = "No installation disk DVD is included".split()
+    str1_Y = "O O O O O O".split()
+    str2 = "It is super fast and has outstanding graphics .".split()
+    str2_Y = "O O O O O O O O O".split()
+    X1_test = []
+    X1_test.append(str1)
+    X1_test.append(str2)
+    
+    Y_test_origin = []
+    Y_test_origin.append(str1_Y)
+    Y_test_origin.append(str2_Y)
+
+
     # train + test for counting vocab size
     X1_train_test = np.concatenate((X1_train_valid, X1_test), axis=0)
     Y_train_test = np.concatenate((Y_train_valid, Y_test_origin), axis=0)
@@ -196,80 +211,82 @@ def train_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,20
     model_config = ModelConfig()
     model_config.adjust_params_follow_paramstr(params_str)
     p = WordPreprocessor()
+
     p.fit(X1=X1_train_test, Y=Y_train_test)
     model_config.adjust_params_follow_preprocessor(p)
     print(p.vocab_tag)
+    print(p.vocab_word)
 
-    # ----- Embedding loading -----
-    w_embedding_path = 'models/{0}.word.{1}.txt'.format(model_config.embedding_name, model_config.word_embedding_size)
-    W_embedding = load_word_embeddings(p.vocab_word, w_embedding_path, model_config.word_embedding_size)
-    print(W_embedding.shape)
+    # # ----- Embedding loading -----
+    # w_embedding_path = 'models/{0}.word.{1}.txt'.format(model_config.embedding_name, model_config.word_embedding_size)
+    # W_embedding = load_word_embeddings(p.vocab_word, w_embedding_path, model_config.word_embedding_size)
+    # print(W_embedding.shape)
 
-    # for evaluation 2 tasks
-    atepc_evaluator = ATEPCNewEvaluator()
+    # # for evaluation 2 tasks
+    # atepc_evaluator = ATEPCNewEvaluator()
 
 
-    kf = KFold(n_splits=10, shuffle=True)
-    i_fold = 0
-    model_name = params_str
+    # kf = KFold(n_splits=10, shuffle=True)
+    # i_fold = 0
+    # model_name = params_str
 
-    results = []
-    X_test, Y_test = p.transform(X1=X1_test, Y=Y_test_origin)
-    for train_index, valid_index in kf.split(X1_train_valid):
-        model_name_ifold = model_name + "." + str(i_fold)
-        # create data
-        X1_train_ori, X1_valid_ori = X1_train_valid[train_index], X1_train_valid[valid_index]
-        Y_train_ori, Y_valid_ori = Y_train_valid[train_index], Y_train_valid[valid_index]
+    # results = []
+    # X_test, Y_test = p.transform(X1=X1_test, Y=Y_test_origin)
+    # for train_index, valid_index in kf.split(X1_train_valid):
+    #     model_name_ifold = model_name + "." + str(i_fold)
+    #     # create data
+    #     X1_train_ori, X1_valid_ori = X1_train_valid[train_index], X1_train_valid[valid_index]
+    #     Y_train_ori, Y_valid_ori = Y_train_valid[train_index], Y_train_valid[valid_index]
 
-        X_train, Y_train = p.transform(X1=X1_train_ori, Y=Y_train_ori)
-        X_valid, Y_valid = p.transform(X1=X1_valid_ori, Y=Y_valid_ori)
-        data = create_data_object(X_train, Y_train, X_valid, Y_valid, X_test, Y_test)
-        # data = create_data_object(copy.deepcopy(X_valid), copy.deepcopy(Y_valid), X_valid , Y_valid, X_test, Y_test)
-        f1_valid_best = -1.0
-        patient_i = model_config.patience
+    #     X_train, Y_train = p.transform(X1=X1_train_ori, Y=Y_train_ori)
+    #     X_valid, Y_valid = p.transform(X1=X1_valid_ori, Y=Y_valid_ori)
+    #     data = create_data_object(X_train, Y_train, X_valid, Y_valid, X_test, Y_test)
+    #     # data = create_data_object(copy.deepcopy(X_valid), copy.deepcopy(Y_valid), X_valid , Y_valid, X_test, Y_test)
+    #     f1_valid_best = -1.0
+    #     patient_i = model_config.patience
 
-        sess = tf.Session()
-        with sess.as_default():
-            # tensorflow model
-            model = MATEPC(config=model_config)
-            sess.run(tf.global_variables_initializer())
-            model.load_word_embedding(sess, initial_weights=W_embedding)
+    #     sess = tf.Session()
+    #     with sess.as_default():
+    #         # tensorflow model
+    #         model = MATEPC(config=model_config)
+    #         sess.run(tf.global_variables_initializer())
+    #         model.load_word_embedding(sess, initial_weights=W_embedding)
 
-            for epoch_i in range(model_config.max_epoch):
-                train_start = int(time.time())
-                crf_transition_parameters, loss_train = train_step(sess, model, model_config, data, "train")
-                train_end = int(time.time())
-                valid_start = int(time.time())
-                f1_valid, ys_pred_valid, ys_true_valid, loss_valid= predict_step(sess, model, p, data, "valid", crf_transition_parameters)
-                f1_test, ys_pred_test, ys_true_test, loss_test = predict_step(sess, model, p, data, "test",
-                                                                    crf_transition_parameters)
-                ate_f1_valid, apc_acc_valid = atepc_evaluator.evaluate(ys_true_valid, ys_pred_valid, verbose=False)
-                ate_f1_test, apc_acc_test = atepc_evaluator.evaluate(ys_true_test, ys_pred_test, verbose=False)
-                valid_end = int(time.time())
-                if f1_valid > f1_valid_best:
-                    patient_i = model_config.patience
-                    f1_valid_best = f1_valid
-                    model.saver.save(sess, save_path=os.path.join(save_path,model_name_ifold))
-                    p.save(file_path=os.path.join(save_path,model_name_ifold))
-                    print("Epoch {0}. Training/valid loss: {1:.4f}/{6:.4f}. Validation f1: {2:.2f}. Time(train/valid): ({4}/{5})s .Patience: {3}. __BEST__, ({7},{8}), ({9}/{10})".format(epoch_i, loss_train, f1_valid * 100, patient_i, train_end-train_start, valid_end-valid_start, loss_valid, ate_f1_valid, apc_acc_valid, ate_f1_test, apc_acc_test))
-                else:
-                    print("Epoch {0}. Training/valid loss: {1:.4f}/{6:.4f}. Validation f1: {2:.2f}. Time(train/valid): ({4}/{5})s .Patience: {3}.         , ({7},{8}), ({9}/{10})".format(epoch_i, loss_train, f1_valid * 100, patient_i, train_end-train_start, valid_end-valid_start, loss_valid, ate_f1_valid, apc_acc_valid, ate_f1_test, apc_acc_test))
-                    patient_i -= 1
-                    if patient_i < 0:
-                        break
+    #         for epoch_i in range(model_config.max_epoch):
+    #             train_start = int(time.time())
+    #             crf_transition_parameters, loss_train = train_step(sess, model, model_config, data, "train")
+    #             train_end = int(time.time())
+    #             valid_start = int(time.time())
+    #             f1_valid, ys_pred_valid, ys_true_valid, loss_valid= predict_step(sess, model, p, data, "valid", crf_transition_parameters)
+    #             f1_test, ys_pred_test, ys_true_test, loss_test = predict_step(sess, model, p, data, "test",
+    #                                                                 crf_transition_parameters)
+    #             ate_f1_valid, apc_acc_valid = atepc_evaluator.evaluate(ys_true_valid, ys_pred_valid, verbose=False)
+    #             ate_f1_test, apc_acc_test = atepc_evaluator.evaluate(ys_true_test, ys_pred_test, verbose=False)
+    #             valid_end = int(time.time())
+    #             if f1_valid > f1_valid_best:
+    #                 patient_i = model_config.patience
+    #                 f1_valid_best = f1_valid
+    #                 model.saver.save(sess, save_path=os.path.join(save_path,model_name_ifold))
+    #                 p.save(file_path=os.path.join(save_path,model_name_ifold))
+    #                 print("Epoch {0}. Training/valid loss: {1:.4f}/{6:.4f}. Validation f1: {2:.2f}. Time(train/valid): ({4}/{5})s .Patience: {3}. __BEST__, ({7},{8}), ({9}/{10})".format(epoch_i, loss_train, f1_valid * 100, patient_i, train_end-train_start, valid_end-valid_start, loss_valid, ate_f1_valid, apc_acc_valid, ate_f1_test, apc_acc_test))
+    #             else:
+    #                 print("Epoch {0}. Training/valid loss: {1:.4f}/{6:.4f}. Validation f1: {2:.2f}. Time(train/valid): ({4}/{5})s .Patience: {3}.         , ({7},{8}), ({9}/{10})".format(epoch_i, loss_train, f1_valid * 100, patient_i, train_end-train_start, valid_end-valid_start, loss_valid, ate_f1_valid, apc_acc_valid, ate_f1_test, apc_acc_test))
+    #                 patient_i -= 1
+    #                 if patient_i < 0:
+    #                     break
 
-            model.saver.restore(sess, save_path=os.path.join(save_path,model_name_ifold))
-            crf_transition_parameters = sess.run(model.crf_transition_parameters)
-            f1_valid, _, _, loss_valid = predict_step(sess, model, p, data, "valid", crf_transition_parameters)
-            f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
-            print("F1 test, ATEPC task: ", f1_test)
-            f1, acc = atepc_evaluator.evaluate(ys_true, ys_pred, verbose=True)
-            results.append([f1_valid, f1, acc])
-            write_result(os.path.join(LOG_ROOT,model_name_ifold+".txt"), sents2, ys_true, ys_pred)
+    #         model.saver.restore(sess, save_path=os.path.join(save_path,model_name_ifold))
+    #         crf_transition_parameters = sess.run(model.crf_transition_parameters)
+    #         f1_valid, _, _, loss_valid = predict_step(sess, model, p, data, "valid", crf_transition_parameters)
+    #         f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
+    #         print("F1 test, ATEPC task: ", f1_test)
+    #         f1, acc = atepc_evaluator.evaluate(ys_true, ys_pred, verbose=True)
+    #         results.append([f1_valid, f1, acc])
+    #         write_result(os.path.join(LOG_ROOT,model_name_ifold+".txt"), sents2, ys_true, ys_pred)
 
-        tf.reset_default_graph()
-        i_fold+=1
-        print("-----",i_fold,"-----")
+    #     tf.reset_default_graph()
+    #     i_fold+=1
+    #     print("-----",i_fold,"-----")
 
 
 if __name__ == "__main__":
@@ -283,7 +300,3 @@ if __name__ == "__main__":
 
     params_str = args.params_str.strip()
     train_model(data_name=args.data_name, params_str=params_str, task_name=args.task_name)
-
-
-
-

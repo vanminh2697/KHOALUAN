@@ -14,7 +14,6 @@ from  utils import collect_data_infor_from_tsv, load_word_embeddings
 from config import ModelConfig
 from features import WordPreprocessor
 
-from evaluation import ATEPCEvaluator, ATEPCNewEvaluator
 from collections import OrderedDict, defaultdict
 from redis import StrictRedis
 import time 
@@ -30,8 +29,18 @@ def create_data_object(X_test, Y_test):
     results = {}
     results['X_test'] = X_test
     results['Y_test'] = Y_test
-    print("Data  test: ", X_test[0].shape, Y_test.shape)
+    # print("Data  test: ", X_test[0].shape, Y_test.shape)
     return results
+
+
+def write_result(fo_path, sents, ys_true, ys_pred):
+    with open(fo_path, mode="w") as f:
+        for sent, y_true, y_pred in zip(sents, ys_true, ys_pred):
+            assert len(sent) == len(y_true) == len(y_pred)
+            for word, y_t, y_p in zip(sent, y_true, y_pred):
+                f.write("{0}\t{1}\t{2}\n".format(word, y_t, y_p))
+            f.write("\n")
+
 
 def get_entities(seq):
     """Gets entities from sequence.
@@ -89,8 +98,7 @@ def predict_step(sess, model, p, data, data_type, crf_transition_parameters):
         ys_pred.append(y_pred_inversed)
         ys_true.append(y_true_inversed)
         assert len(y_pred) == len(y_true)
-    print('############################ result ############################')
-    print(ys_pred)
+    # print(ys_pred)
     f1 = f1_score(ys_pred, ys_true)
     losses = np.array(losses)
     losses_avg = np.mean(losses)
@@ -128,16 +136,10 @@ def f1_score(y_true, y_pred):
     f1 = 2 * p * r / (p + r) if correct_preds > 0 else 0
     return f1
 
-
-def pre_precess( X): 
-
-    
-    return X1 
-
 def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200,20,0.0010,30,0.000"):
     DATA_ROOT = os.getcwd() + '/data'
     SAVE_ROOT = os.getcwd() + '/models'  # trained models
-    LOG_ROOT = os.getcwd() + '/logs'
+    LOG_ROOT = os.getcwd() + '/result_minh'
 
     print("-----{0}-----{1}-----{2}-----".format(task_name, data_name, params_str))
 
@@ -154,28 +156,19 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
     test_path = os.path.join(DATA_ROOT, '{0}.{1}.test.tsv'.format(data_name, task_name))
     train_path = os.path.join(DATA_ROOT, '{0}.{1}.train.tsv'.format(data_name, task_name))
-
-    sents2, _, _, _, labels2, preds2 = collect_data_infor_from_tsv(test_path, keep_conflict=True)
-    X1_test = sents2
-    Y_test_origin = labels2
+    
     # train set
     sents1, _, _, _, labels1, preds1 = collect_data_infor_from_tsv(train_path, keep_conflict=False)
     X1_train_valid = sents1
     Y_train_valid = labels1
-    # test set
-    sents2, _, _, _, labels2, preds2 = collect_data_infor_from_tsv(test_path, keep_conflict=True)
-    X1_test = sents2
-    Y_test_origin = labels2
-    # Create sequent
-    #print(X1_test)
-    # train + test for counting vocab size
-    X1_train_test = np.concatenate((X1_train_valid, X1_test), axis=0)
-    Y_train_test = np.concatenate((Y_train_valid, Y_test_origin),axis=0)
     
-    # print(len(dic))
+
+
+      ### Test ####
+
+
 
     # ----- Model Config
-
     model_config = ModelConfig()
     model_config.adjust_params_follow_paramstr(params_str)
     p = WordPreprocessor()
@@ -184,12 +177,6 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
 
 
-    print("len vocab_tag : " ,len(p.vocab_tag))
-    print("len vacab_word : ",len(p.vocab_word))
-    print("max len word: ",p.max_length)
-
-    # # ----- Embedding loading -----
-
     w_embedding_path = 'models/{0}.word.{1}.txt'.format(model_config.embedding_name, model_config.word_embedding_size)
     W_embedding = load_word_embeddings(p.vocab_word, w_embedding_path, model_config.word_embedding_size)
 
@@ -197,32 +184,12 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
     i_fold = 3
     model_name = params_str
-    X =[]
-    Y = []
-    # test 
-    # X.append(list("I'm aren't Excellent sound  !!!!!!".split(' ')))
-    # Y.append(list('O O O'.split()))
-    # X_test, Y_test = p.transform(X1=X, Y=Y)
-    x = 0
-    # seqs = r.keys('*')
-    # for i in seqs:
-    #     X.append(list(i.split()))
-    #     print (i.split(" "))
-    #     temp =[]
-    #     for j in range(len(i.split())):
-    #         temp.append('O')
-    #     #print(len(i.split())," ",len(temp))
-    #     Y.append(temp)
-    # print (len(X)," ",len(Y))
-    # for i in range(len(X)):
-    #     print(X[i])
-    #     print(Y[i])
-    X_test,Y_test = p.transform(X1=X,Y=Y)
 
 
-    # created data
-    data = create_data_object(X_test, Y_test)
     sess = tf.Session()
+
+ 
+    x = 0
     with sess.as_default():
         model_name_ifold = model_name + "." + str(i_fold)
         model = MATEPC(config=model_config)
@@ -239,16 +206,20 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
                     Y = []
                     for i in seqs:
                         X.append(list(i.split()))
-                        temp = " ".join('O' for i in range(len(i.split())-1))
+                        temp = " ".join('O' for i in range(len(i.split())))
                         Y.append(list(temp.split()))
+                        sents2= X
                         X_test,Y_test = p.transform(X1=X,Y=Y)
                     data = create_data_object(X_test, Y_test)
                     crf_transition_parameters = sess.run(model.crf_transition_parameters)
                     f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
-                    #print("F1 test, ATEPC task: ", f1_test)
+                    print("F1 test, ATEPC task: ", ys_pred)
                     for i in range(len(seqs)): 
                         r.set(seqs[i],' '.join(ys_pred[i]))
+                    write_result(os.path.join(LOG_ROOT,model_name_ifold+".txt"), sents2, ys_true, ys_pred)
             print(x)
             time.sleep(1)
+
+        
 if __name__ == "__main__":
 	load_model()

@@ -28,12 +28,51 @@ class WordPreprocessor(BaseEstimator, TransformerMixin):
         self.vocab_tag = None
         self.stopwords = OrderedDict({PAD: 0, UNK: 1})
 
+    ################### Test model ##########################
+
+
+    # def fit(self, X1, Y):
+    #     vocab_word = OrderedDict({PAD: 0, UNK: 1})
+    #     vocab_tag = OrderedDict({PAD: 0})
+
+    #     stop_words = set()
+    #     stop_words.update(['.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '@', '#', '$', '%', '^', '&', '*', '+', '=', '\\', '|', '`', '~'])
+
+    #     self.max_length = 0
+    #     for words in X1:
+    #         self.max_length = max(self.max_length, len(words))
+    #         for w in words:
+    #             w = self._lower(w)
+    #             w = self._normalize_num(w)
+    #             if w not in vocab_word:
+    #                 vocab_word[w] = len(vocab_word)
+    #                 if w in stop_words:
+    #                     self.stopwords[w] = vocab_word[w]
+
+    #     for t in itertools.chain(*Y):
+    #         if t not in vocab_tag:
+    #             vocab_tag[t] = len(vocab_tag)
+
+    #     self.vocab_word = vocab_word
+    #     self.vocab_tag = vocab_tag
+    #     self.reverse_vocab_word = {i: t for t, i in self.vocab_word.items()}
+    #     self.reverse_vocab_tag = {i: t for t, i in self.vocab_tag.items()}
+
+    #     self.number_of_classes = len(self.vocab_tag)
+    #     self.word_vocab_size = len(self.vocab_word)
+    #     self.max_length = self.max_length
+
+    #     return self
+
+
+    #################### fit for old model #####################
+
     def fit(self):
         vocab_word = OrderedDict({PAD: 0, UNK: 1})
         vocab_tag = OrderedDict({PAD: 0})
 
-        # stop_words = set()
-        # stop_words.update(['.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '@', '#', '$', '%', '^', '&', '*', '+', '=', '\\', '|', '`', '~'])
+        stop_words = set()
+        stop_words.update(['.', ',', '"', "'", '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '@', '#', '$', '%', '^', '&', '*', '+', '=', '\\', '|', '`', '~'])
 
         self.max_length = 83
         # for words in X1:
