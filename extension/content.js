@@ -10,10 +10,20 @@ function sendMs() {
 	 			alert("vui lòng đời web load....");
 	 		}
 	   		console.log("this is send message");
+			getName();
 			document.getElementById("click").onclick = function(){
 				var x = send()
 			};
 	 	});
+	});
+}
+function getName(){
+	chrome.runtime.onMessage.addListener(function(message){
+		if (message.action == 'haha'){
+			var server = message.data ;
+			console.log(server);
+			document.getElementById("nameProduct").innerHTML = server ;
+		}
 	});
 }
 function send(){
