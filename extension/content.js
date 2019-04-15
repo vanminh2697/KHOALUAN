@@ -44,6 +44,7 @@ function send(){
 			else{
 				
 				var result = JSON.parse(server);
+				result.sort(SortByAspect);
 				document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
@@ -54,4 +55,10 @@ function send(){
 			
 		}
 	});
+}
+function sortAspect(x, y){
+	return ((x.Name == y.Name) ? 0 : ((x.Name > y.Name) ? 1 : -1 ));
+}
+function SortByValue(x,y) {
+    return x.ID - y.ID; 
 }
