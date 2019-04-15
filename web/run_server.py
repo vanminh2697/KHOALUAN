@@ -21,18 +21,28 @@ def caculation(keys,results):
     for i in range(len(keys)):
         string = keys[i].split(' ')
         rs = results[i].split(' ')
+        print(string)
+        print (rs)
+        print (len(string))
+        print (len(rs))
         j = 0
         while j < len(rs):
             if rs[j] != 'O':
                 tempt = []
-                while j < len(rs) and rs[j] !='O':
+                while j < len(rs) and rs[j] != 'O':
                    tempt.append(string[j])
                    j += 1 
                 aspect  = " ".join(tempt)
                 if aspect not in Aspects: 
                     Aspects.append(aspect)
+                    # if (aspect == "work"):
+                    #     print (aspect)
+                    #     print (string)
+                    #     print(rs)
             j +=1
-    # print(Aspects)
+    
+    print(Aspects)
+
     # calucation Value
     # 1: positive 
     # 0: Negative 
@@ -41,19 +51,18 @@ def caculation(keys,results):
     m = 3
    
     Value = numpy.zeros((n, m+1))
-    # for i in range(n):
-    #     Value[i][3] = 1
+    
+
     for i in range(n):
         name = Aspects[i].split(' ')[0]
         for j in range(len(keys)):
             seq = keys[j]
-            seq_split = seq.split(' ')
+            seq_split = seq.split(' ')  
             if Aspects[i] in seq and name in seq_split:
                 index = seq_split.index(name)
                 rs = results[j].split(' ')
                 if rs[index] !="O":
                     pol = rs[index].split('-')[1]
-                    # print(pol)
                     if pol == 'POS':
                         Value[i][1] += 1
                         Value[i][3] += 1
@@ -62,17 +71,17 @@ def caculation(keys,results):
                         Value[i][3] += 1
                     else :
                         Value[i][2] += 1
-                        Value[i][3] += 1
+                        Value[i][3] += 1      
     json_results = [] 
     for i in range(n):
         aspect = Aspects[i]
-        # if (Value[i][3]!=0):
         x = round((Value[i][0]/Value[i][3])*100)
         y = round((Value[i][1]/Value[i][3])*100)
         z = round((Value[i][2]/Value[i][3])*100)
         temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z}
         json_results.append(temp)
     return json_results
+
 
 def pre_process(str):
     # # handing double space
@@ -86,11 +95,15 @@ def pre_process(str):
     str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
     str = re.sub("\"", " inch", str)
     str = re.sub("/", " / ", str)
-    t = str.split()
-    k  = " ".join(t)
-    # #for i in X: 
-    #     #if i != "" and i !="\n":
-    #         #string.append(i)
+    t = str.split(" ")
+    print("################")
+    print (t)
+    string =[]
+    for i in t: 
+        if i !='' and i !="\n":
+            string.append(i)
+
+    k  = " ".join(string) 
     return k
 
     
@@ -106,7 +119,6 @@ def index():
     
     if request.method == "POST":
         text = request.form["data"]
-        print(text)
         if text != '':
             k = text.split(". ")
             print("len text ",len(k))       
@@ -143,7 +155,7 @@ def index():
                     x +=1 
                     time.sleep(1)
             json_results = caculation(keys, value)
-            print(json_results)
+            # print(json_results)
             return json.dumps(json_results)
         else: 
             return "Can not find reviews from Web page"
