@@ -44,7 +44,7 @@ function send(){
 			else{
 				
 				var result = JSON.parse(server);
-				result.sort(SortByAspect);
+				result.sort(SortByPOS);
 				document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
@@ -59,6 +59,12 @@ function send(){
 function sortAspect(x, y){
 	return ((x.aspect == y.aspect) ? 0 : ((x.aspect > y.aspect) ? 1 : -1 ));
 }
-function SortByValue(x,y) {
+function SortByPOS(x,y) {
     return x.POS - y.POS; 
+}
+function SortByNEG(x,y) {
+    return x.NEG - y.NEG; 
+}
+function SortByNEU(x,y) {
+    return x.NEU - y.NEU; 
 }
