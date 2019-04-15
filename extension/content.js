@@ -57,8 +57,8 @@ function send(){
 	});
 }
 function sortAspect(x, y){
-	return ((x.Name == y.Name) ? 0 : ((x.Name > y.Name) ? 1 : -1 ));
+	return ((x.aspect == y.aspect) ? 0 : ((x.aspect > y.aspect) ? 1 : -1 ));
 }
 function SortByValue(x,y) {
-    return x.ID - y.ID; 
+    return x.POS - y.POS; 
 }
