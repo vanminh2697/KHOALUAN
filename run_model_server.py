@@ -213,7 +213,6 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
                     data = create_data_object(X_test, Y_test)
                     crf_transition_parameters = sess.run(model.crf_transition_parameters)
                     f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
-                    print("F1 test, ATEPC task: ", ys_pred)
                     for i in range(len(seqs)): 
                         r.set(seqs[i],' '.join(ys_pred[i]))
                     write_result(os.path.join(LOG_ROOT,model_name_ifold+".txt"), sents2, ys_true, ys_pred)

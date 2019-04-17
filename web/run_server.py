@@ -21,10 +21,10 @@ def caculation(keys,results):
     for i in range(len(keys)):
         string = keys[i].split(' ')
         rs = results[i].split(' ')
-        print(string)
-        print (rs)
-        print (len(string))
-        print (len(rs))
+        # print(string)
+        # print (rs)
+        # print (len(string))
+        # print (len(rs))
         j = 0
         while j < len(rs):
             if rs[j] != 'O':
@@ -35,10 +35,6 @@ def caculation(keys,results):
                 aspect  = " ".join(tempt)
                 if aspect not in Aspects: 
                     Aspects.append(aspect)
-                    # if (aspect == "work"):
-                    #     print (aspect)
-                    #     print (string)
-                    #     print(rs)
             j +=1
     
     print(Aspects)
@@ -59,19 +55,36 @@ def caculation(keys,results):
             seq = keys[j]
             seq_split = seq.split(' ')  
             if Aspects[i] in seq and name in seq_split:
-                index = seq_split.index(name)
-                rs = results[j].split(' ')
-                if rs[index] !="O":
-                    pol = rs[index].split('-')[1]
-                    if pol == 'POS':
-                        Value[i][1] += 1
-                        Value[i][3] += 1
-                    elif pol == 'NEG':
-                        Value[i][0] += 1
-                        Value[i][3] += 1
-                    else :
-                        Value[i][2] += 1
-                        Value[i][3] += 1      
+                count = seq_split.count(name)
+                if count >1: 
+                    rs = results[j].split(' ')
+                    for k in range( len(seq_split)):
+                        if(seq_split[k]==name):
+                            if rs[k] !="O":
+                                pol = rs[k].split('-')[1]
+                                if pol == 'POS':
+                                    Value[i][1] += 1
+                                    Value[i][3] += 1
+                                elif pol == 'NEG':
+                                    Value[i][0] += 1
+                                    Value[i][3] += 1
+                                else :
+                                    Value[i][2] += 1
+                                    Value[i][3] += 1   
+                else :
+                    index = seq_split.index(name)
+                    rs = results[j].split(' ')
+                    if rs[index] !="O":
+                        pol = rs[index].split('-')[1]
+                        if pol == 'POS':
+                            Value[i][1] += 1
+                            Value[i][3] += 1
+                        elif pol == 'NEG':
+                            Value[i][0] += 1
+                            Value[i][3] += 1
+                        else :
+                            Value[i][2] += 1
+                            Value[i][3] += 1      
     json_results = [] 
     for i in range(n):
         aspect = Aspects[i]
@@ -95,9 +108,7 @@ def pre_process(str):
     str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
     str = re.sub("\"", " inch", str)
     str = re.sub("/", " / ", str)
-    t = str.split(" ")
-    print("################")
-    print (t)
+    t = str.split(' ')
     string =[]
     for i in t: 
         if i !='' and i !="\n":
@@ -116,12 +127,11 @@ def index():
 
     A = []
     # save seq to database
-    
+    print ("pre_process...")
     if request.method == "POST":
         text = request.form["data"]
         if text != '':
-            k = text.split(". ")
-            print("len text ",len(k))       
+            k = text.split(". ")    
             for i in k:
                 z = pre_process(i)
                 z = z.split('. ')
@@ -138,12 +148,17 @@ def index():
                     r.set(string,"")
             
             keys = r.keys('*')
+            print(keys[0])
             x = 0
             value = []
+            print("complete preprocess....")
+
             if(len(keys)> 0):
                 while True:
                     temp = r.get(keys[0])
-                    if (len(temp.split())>1):
+                    print(temp)
+                    if (len(temp.split())>=1):
+                        print("YES")
                         results = []
                         for i in keys: 
                             rs = r.get(i)
@@ -154,6 +169,7 @@ def index():
                             break 
                     x +=1 
                     time.sleep(1)
+                    print x
             json_results = caculation(keys, value)
             # print(json_results)
             return json.dumps(json_results)
