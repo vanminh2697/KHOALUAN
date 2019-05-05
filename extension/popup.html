@@ -10,16 +10,27 @@
 			}
 			p[id ="url"]{
 		 		white-space: nowrap; 
-		 		width: 300px;
+		 		width: 600px;
 		 		height: 20px;
 		 		border: 3px solid #73AD21;
 		 		border-style: double;
 		 		overflow: hidden;
 		 		text-overflow: ellipsis;
 		 	}
-		 	table, th, td{
-				border: 1px solid black;
+		 	table{
+		 		border-collapse: collapse;
+  				width: 100%;
+		 	} 
+		 	th, td{
+		 		padding: 8px;
+  				text-align: center;
+  				border-bottom: 1px solid #ddd;
 				margin: auto;
+			}
+			tr:hover {background-color:#f5f5f5;}
+			th {
+			  background-color: #4CAF50;
+			  color: white;
 			}
 			button{
 			    background-color: #a3e0ff;
@@ -30,12 +41,11 @@
 				text-decoration: none;
 				display: inline-block;
 				font-size: 16px;
-			    margin: 4px 17px;
 				cursor: pointer;
 				box-shadow: 0 8px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
 			}
 			.scroll-left{
-				width: 300px;
+				width: 600px;
 				height: 30px; 
 				overflow: hidden;
 				position: relative;
@@ -80,12 +90,118 @@
 					transform: translateX(-100%); 
 				}
 			}
+			.sapxep {
+			 	position: relative;
+			  	display: inline-block;
+			}
+
+			.sapxep-content {
+			  	display: none;
+			  	position: absolute;
+			  	background-color: #f9f9f9;
+			  	min-width: 70px;
+			  	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+			  	z-index: 1;
+			}
+
+			.sapxep-content a {
+			  	color: black;
+			  	padding: 10px 10px;
+			  	text-decoration: none;
+			  	display: block;
+			  	text-align: center;
+			}
+			.sapxep-content a:hover {background-color: #f1f1f1}
+
+			.sapxep:hover .sapxep-content {
+			  	display: block;
+			}
+
+			.sapxep:hover .sapxepbtn {
+			  	background-color: #3e8e41;
+			}
+			.sapxepbtn {
+				background-color: #a3e0ff;
+			    border: #ff0066;
+			    color: black;
+			  	padding: 10px 10px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 10px;
+				cursor: pointer;
+			}
+			a{
+			    border: #ff0066;
+			    color: black;
+			  	padding: 10px 10px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 10px;
+				cursor: pointer;
+			}
+			.timkiem {
+			 	position: relative;
+			  	display: inline-block;
+			}
+			.timkiembtn {
+				background-color: #a3e0ff;
+			    color: black;
+			    position: absolute;
+			    padding: 10px 10px;
+				text-align: center;
+				text-decoration: none;
+				display: inline-block;
+				font-size: 10px;
+				cursor: pointer;
+				border: none;
+			}
+			input[type=text] {
+			  	width: 130px;
+			  	box-sizing: border-box;
+			  	border: 2px solid #ccc;
+			  	border-radius: 15px;
+			  	font-size: 16px;
+			  	background-color: white;
+			  	padding: 5px 20px 5px 10px;
+			  	-webkit-transition: width 0.4s ease-in-out;
+			  	transition: width 0.4s ease-in-out;
+			}
+
+			input[type=text]:focus {
+			  	width: 80%;
+			}
 		</style>
 		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
 	</head>
-	<body style="background-color: #f2ffff;">
+	<body style="background-color: #f2ffff; width: 600px; height: 200px">
 		<div class="scroll-left">
 			<p>Welcome to My extension</p>
+		</div>
+		
+		<div class="timkiem" style="float:left;">
+		  	<p>Search: <input id = "input" type="text" name="search" placeholder="Search.."></p>
+		</div>
+		<br>
+		<div class="sapxep" style="float:right;">
+		  <button class="sapxepbtn">Low to high</button>
+		  <div class="sapxep-content">
+			  <a id = "de_pos">Positive</a>
+			  <a id = "de_neu">Neutral</a>
+			  <a id = "de_neg">Negative</a>
+		  </div>
+		</div>
+		<div class="sapxep"style="float:right;">
+		  <button class="sapxepbtn">High to low</button>
+		  <div class="sapxep-content">
+			  <a id = "in_pos">Positive</a>
+			  <a id = "in_neu">Neutral</a>
+			  <a id = "in_neg">Negative</a>
+		  </div>
+		</div>
+		<div class="sapxep" style="float:right; width: 40px">
+		  <p>Sort:</p>
 		</div>
 		<p id ="tong"></p>
 		<br>
@@ -98,23 +214,15 @@
 				<th>Negative</th>
 				<th>Neutral</th>
 			</tr>
-			<!-- <tr>
-				<td>Laptop</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>Keyboard</td>
-				<td></td>
-			</tr>
-			<tr>
-				<td>Software</td>
-				<td></td>
-			</tr> -->
 		</table>
 		<br>
-		<button id = "click">Start</button>
-		<button id = "fb">Feedback</button>
+		<button id = "click" style="float:left;">Start</button>
+		<button id = "fb" style="float:right;">Feedback</button>
+		<br>
+		<br>
+		<br>
+		<br>
 		<p id = "url" title="Tab Current"></p>
-		<p id = " hihi"></p>
+		<p id = "hihi"></p>
 	</body>
 </html>
