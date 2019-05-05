@@ -7,7 +7,7 @@ function sendMs() {
 	 		try{
 	 			document.getElementById("url").innerHTML = response.farewell;
 	 		}catch(e){
-	 			alert("vui lòng đời web load....");
+	 			alert("vui lòng đợi web load....");
 	 		}
 	   		console.log("this is send message");
 			getName();
@@ -41,14 +41,13 @@ function send(){
 			if(server == "Can not find reviews from Web page"){
 				text = "<dt>" + server+"</dt>"
 			}
-			else{
-				
+			else{			
 				var result = JSON.parse(server);
-				result.sort(SortByPOS);
+				result.sort(SortByDePOS);
 				document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
-					text += "<tr> <td>"+ result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"% </td> </tr>" ;
+					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"% </td> </tr>" ;
 				}
 			}
 			document.getElementById("result").innerHTML = text ;
@@ -56,15 +55,110 @@ function send(){
 		}
 	});
 }
-function sortAspect(x, y){
-	return ((x.aspect == y.aspect) ? 0 : ((x.aspect > y.aspect) ? 1 : -1 ));
+function SortByDePOS(x,y) {
+    return y.POS - x.POS; 
 }
-function SortByPOS(x,y) {
-    return x.POS - y.POS; 
+
+document.getElementById("de_pos").onclick = function(){
+	var table = document.getElementById("result");
+	document.getElementById("hihi").innerHTML = "aaaaa";
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[1];
+			y = rows[j].getElementsByTagName("TD")[1];
+			if (Number(x.innerHTML) > Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
+};
+document.getElementById("de_neu").onclick = function(){
+	var table = document.getElementById("result");
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[3];
+			y = rows[j].getElementsByTagName("TD")[3];
+			if (Number(x.innerHTML) > Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
 }
-function SortByNEG(x,y) {
-    return x.NEG - y.NEG; 
+document.getElementById("de_neg").onclick = function(){
+	var table = document.getElementById("result");
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[2];
+			y = rows[j].getElementsByTagName("TD")[2];
+			if (Number(x.innerHTML) > Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
 }
-function SortByNEU(x,y) {
-    return x.NEU - y.NEU; 
+document.getElementById("in_pos").onclick = function(){
+	var table = document.getElementById("result");
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[1];
+			y = rows[j].getElementsByTagName("TD")[1];
+			if (Number(x.innerHTML) < Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
+}
+document.getElementById("in_neu").onclick = function(){
+	var table = document.getElementById("result");
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[3];
+			y = rows[j].getElementsByTagName("TD")[3];
+			if (Number(x.innerHTML) < Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
+}
+document.getElementById("in_neg").onclick = function(){
+	var table = document.getElementById("result");
+	var i, j, rows;
+	rows = table.rows;
+	for(i = 1; i < rows.length - 1; i++){
+		for(j = i + 1; j < rows.length; j++){
+			x = rows[i].getElementsByTagName("TD")[2];
+			y = rows[j].getElementsByTagName("TD")[2];
+			if (Number(x.innerHTML) < Number(y.innerHTML)){
+	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
+	      	}
+		}
+	}
+}
+document.getElementById("input").onkeyup = function(){
+	var input, filter, table, rows, name, i, txtValue;
+	input = document.getElementById("input");
+	filter = input.value.toUpperCase();
+	table = document.getElementById("result");
+	rows = table.rows;
+	for (i = 0; i < rows.length; i++) {
+	    name = rows[i].getElementsByTagName("td")[0];
+	    if (name) {
+	      	txtValue = name.textContent || name.innerText;
+	      	if (txtValue.toUpperCase().indexOf(filter) > -1) {
+	        	rows[i].style.display = "";
+	      	} else {
+	        	rows[i].style.display = "none";
+	      	}
+	    }       
+	}
 }
