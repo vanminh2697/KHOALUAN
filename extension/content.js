@@ -61,7 +61,6 @@ function SortByDePOS(x,y) {
 
 document.getElementById("de_pos").onclick = function(){
 	var table = document.getElementById("result");
-	document.getElementById("hihi").innerHTML = "aaaaa";
 	var i, j, rows;
 	rows = table.rows;
 	for(i = 1; i < rows.length - 1; i++){
