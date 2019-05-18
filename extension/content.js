@@ -12,8 +12,11 @@ function sendMs() {
 	   		console.log("this is send message");
 			getName();
 			document.getElementById("click").onclick = function(){
+				document.getElementById("loader").style.display = "block";
+				document.getElementById("imf").innerHTML = "getting data............" ;
 				var x = send()
 			};
+			getT();
 	 	});
 	});
 }
@@ -23,6 +26,13 @@ function getName(){
 			var server = message.data ;
 			console.log(server);
 			document.getElementById("nameProduct").innerHTML = server ;
+		}
+	});
+}
+function getT(){
+	chrome.runtime.onMessage.addListener(function(message){
+		if (message.action == 'hehe'){
+			document.getElementById("imf").innerHTML = "processing............" ;
 		}
 	});
 }
@@ -51,7 +61,8 @@ function send(){
 				}
 			}
 			document.getElementById("result").innerHTML = text ;
-			
+			document.getElementById("loader").style.display = "none";
+			document.getElementById("imf").innerHTML = "" ;
 		}
 	});
 }
