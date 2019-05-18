@@ -86,6 +86,10 @@ chrome.runtime.onMessage.addListener(function(message){
 		}
 		async function upload(){
 			comments = await getData2();
+			chrome.runtime.sendMessage({
+				'action': 'hehe',
+				'data' : 'done'
+			})
 			var req = new XMLHttpRequest();
 			req.open('POST', 'http://localhost:5000/', false);
 			req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
