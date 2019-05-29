@@ -100,7 +100,7 @@ def pre_process(str):
     # # handing double space
     str = re.sub(r'([-()#$%^&*]+)', "", str)
     str = re.sub(r'([,?!.:]{2,})', r'.', str)
-    str = re.sub(r'([,?!.:])', r' \1 ', str)
+    str = re.sub(r'([,?!.:;])', r' \1 ', str)
     str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
     str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
     str = re.sub(r'[^\x00-\x7f]', "", str)
@@ -115,6 +115,7 @@ def pre_process(str):
             string.append(i)
 
     k  = " ".join(string) 
+    k.lower()
     return k
 
     
@@ -126,10 +127,12 @@ def index():
     r.flushall()
 
     A = []
+
     # save seq to database
-    print ("pre_process...")
+
     if request.method == "POST":
         text = request.form["data"]
+        
         if text != '':
             k = text.split(". ")    
             for i in k:
@@ -151,7 +154,6 @@ def index():
             print(keys[0])
             x = 0
             value = []
-            print("complete preprocess....")
 
             if(len(keys)> 0):
                 while True:

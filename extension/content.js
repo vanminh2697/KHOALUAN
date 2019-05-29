@@ -54,7 +54,7 @@ function send(){
 			else{			
 				var result = JSON.parse(server);
 				result.sort(SortByDePOS);
-				document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
+				// document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
 					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"% </td> </tr>" ;
@@ -70,7 +70,8 @@ function SortByDePOS(x,y) {
     return y.POS - x.POS; 
 }
 
-document.getElementById("de_pos").onclick = function(){
+function myFunction() {
+	document.getElementById("de_pos").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
 	rows = table.rows;
@@ -79,11 +80,12 @@ document.getElementById("de_pos").onclick = function(){
 			x = rows[i].getElementsByTagName("TD")[1];
 			y = rows[j].getElementsByTagName("TD")[1];
 			if (Number(x.innerHTML) > Number(y.innerHTML)){
-	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
-	      	}
+				rows[i].parentNode.insertBefore(rows[j],rows[i]);
+			}
 		}
 	}
-};
+}
+}
 document.getElementById("de_neu").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -154,6 +156,7 @@ document.getElementById("in_neg").onclick = function(){
 		}
 	}
 }
+// function Search()
 document.getElementById("input").onkeyup = function(){
 	var input, filter, table, rows, name, i, txtValue;
 	input = document.getElementById("input");

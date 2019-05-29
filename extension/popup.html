@@ -3,20 +3,27 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 	</head>
 	<body style="background-color: #f2ffff; width: 600px; height: 200px">
-		<div class="scroll-left">
+		<div class = "container"> 
+		<!-- <div class="scroll-left">
 			<p>Welcome to My extension</p>
+		</div> -->
+		<div> 
+			<h2 style="text-align:center">REVIEW LAPTOP</h2>
 		</div>
 		
 		<div class="timkiem" style="float:left;">
-		  	<p>Search: <input id = "input" type="text" name="search" placeholder="Search.."></p>
+		  	<input id = "input" type="text" name="search" placeholder="Search..">
 		</div>
 		<br>
 		<div class="sapxep" style="float:right;">
 		  <button class="sapxepbtn">Low to high</button>
 		  <div class="sapxep-content">
-			  <a id = "de_pos">Positive</a>
+			  <a id = "de_pos" onclick="myFunction()">Positive</a>
 			  <a id = "de_neu">Neutral</a>
 			  <a id = "de_neg">Negative</a>
 		  </div>
@@ -29,14 +36,10 @@
 			  <a id = "in_neg">Negative</a>
 		  </div>
 		</div>
-		<div class="sapxep" style="float:right; width: 60px; height: 60px;">
-		  <h2>SORT</h2>
-		</div>
-		<p id ="tong"></p>
 		<br>
 		<p id = "nameProduct"></p>
 		<br>
-		<table id ="result">
+		<table id ="result" class="table table-striped">
 			<tr>
 				<th>Aspect</th>
 				<th>Postive</th>
@@ -44,18 +47,15 @@
 				<th>Neutral</th>
 			</tr>
 		</table>
-		<br>
-		<button id = "click" style="float:left;">Start</button>
-		<button id = "fb" style="float:right;">Feedback</button>
-		<br>
-		<br>
-		<br>
-		<br>
+		<div class="col text-center">
+			<button id = "click" style="float:center;">Start</button>
+		  </div>
+		
 		<div id="loader"></div>
 		<br>
 		<p id = "imf"></p>
-		
 		<p id = "url" title="Tab Current"></p>
 		<p id = "hihi"></p>
+	</div>
 	</body>
 </html>
