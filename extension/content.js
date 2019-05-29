@@ -13,7 +13,6 @@ function sendMs() {
 			getName();
 			document.getElementById("click").onclick = function(){
 				document.getElementById("loader").style.display = "block";
-				document.getElementById("imf").innerHTML = "getting data............" ;
 				var x = send()
 			};
 			getT();
