@@ -1,4 +1,3 @@
-
 sendMs();
 function sendMs() {
 	console.log("popup.js > run.js");
@@ -69,8 +68,8 @@ function SortByDePOS(x,y) {
     return y.POS - x.POS; 
 }
 
-function myFunction() {
-	document.getElementById("de_pos").onclick = function(){
+document.getElementById("de_pos").onclick = function(){
+//function funcDePos(){
 	var table = document.getElementById("result");
 	var i, j, rows;
 	rows = table.rows;
@@ -78,14 +77,15 @@ function myFunction() {
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[1];
 			y = rows[j].getElementsByTagName("TD")[1];
-			if (Number(x.innerHTML) > Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) > Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 				rows[i].parentNode.insertBefore(rows[j],rows[i]);
 			}
 		}
 	}
-}
+
 }
 document.getElementById("de_neu").onclick = function(){
+//function funcDeNeu(){
 	var table = document.getElementById("result");
 	var i, j, rows;
 	rows = table.rows;
@@ -93,12 +93,13 @@ document.getElementById("de_neu").onclick = function(){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[3];
 			y = rows[j].getElementsByTagName("TD")[3];
-			if (Number(x.innerHTML) > Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) > Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
 	      	}
 		}
 	}
 }
+//function funcDeNeg(){
 document.getElementById("de_neg").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -107,12 +108,13 @@ document.getElementById("de_neg").onclick = function(){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[2];
 			y = rows[j].getElementsByTagName("TD")[2];
-			if (Number(x.innerHTML) > Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) > Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
 	      	}
 		}
 	}
 }
+//function funcInPos(){
 document.getElementById("in_pos").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -121,12 +123,13 @@ document.getElementById("in_pos").onclick = function(){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[1];
 			y = rows[j].getElementsByTagName("TD")[1];
-			if (Number(x.innerHTML) < Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) < Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
 	      	}
 		}
 	}
 }
+//function funcInNeu(){
 document.getElementById("in_neu").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -135,12 +138,13 @@ document.getElementById("in_neu").onclick = function(){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[3];
 			y = rows[j].getElementsByTagName("TD")[3];
-			if (Number(x.innerHTML) < Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) < Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
 	      	}
 		}
 	}
 }
+//function funcInNeg(){
 document.getElementById("in_neg").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -149,13 +153,13 @@ document.getElementById("in_neg").onclick = function(){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[2];
 			y = rows[j].getElementsByTagName("TD")[2];
-			if (Number(x.innerHTML) < Number(y.innerHTML)){
+			if (Number(x.innerHTML.substring(0,x.innerHTML.length-1)) < Number(y.innerHTML.substring(0,y.innerHTML.length-1))){
 	        	rows[i].parentNode.insertBefore(rows[j],rows[i]);
 	      	}
 		}
 	}
 }
-// function Search()
+//function Search(){
 document.getElementById("input").onkeyup = function(){
 	var input, filter, table, rows, name, i, txtValue;
 	input = document.getElementById("input");
