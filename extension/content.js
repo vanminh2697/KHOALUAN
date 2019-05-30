@@ -1,3 +1,4 @@
+
 sendMs();
 function sendMs() {
 	console.log("popup.js > run.js");
@@ -12,6 +13,7 @@ function sendMs() {
 			getName();
 			document.getElementById("click").onclick = function(){
 				document.getElementById("loader").style.display = "block";
+				document.getElementById("imf").innerHTML = "getting data............" ;
 				var x = send()
 			};
 			getT();
@@ -47,7 +49,7 @@ function send(){
 			console.log(message.action)
 			console.log(server)
 			if(server == "Can not find reviews from Web page"){
-				text = "<dt>" + server+"</dt>"
+				text = "<dt>" + server+"</dt>";
 			}
 			else{			
 				var result = JSON.parse(server);
@@ -55,7 +57,7 @@ function send(){
 				// document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
 				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
 				for(var i = 0;i<result.length; i++){
-					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"% </td> </tr>" ;
+					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"%</td> </tr>" ;
 				}
 			}
 			document.getElementById("result").innerHTML = text ;

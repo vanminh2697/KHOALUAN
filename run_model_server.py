@@ -159,8 +159,6 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
     
     # train set
     sents1, _, _, _, labels1, preds1 = collect_data_infor_from_tsv(train_path, keep_conflict=False)
-    X1_train_valid = sents1
-    Y_train_valid = labels1
     
 
 
@@ -205,7 +203,8 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
                     X =[]
                     Y = []
                     for i in seqs:
-                        X.append(list(i.split()))
+                        iSplit = list(i.split())
+                        X.append([element.lower() for element in iSplit])
                         temp = " ".join('O' for i in range(len(i.split())))
                         Y.append(list(temp.split()))
                         sents2= X
