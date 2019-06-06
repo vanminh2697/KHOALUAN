@@ -86,6 +86,7 @@ def caculation(keys,results):
                             Value[i][2] += 1
                             Value[i][3] += 1      
     json_results = [] 
+    Aspects = [element.upper() for element in Aspects ]
     for i in range(n):
         aspect = Aspects[i]
         x = round((Value[i][0]/Value[i][3])*100)
@@ -112,7 +113,7 @@ def pre_process(str):
     string =[]
     for i in t: 
         if i !='' and i !="\n":
-            string.append(i)
+            string.append(i.lower())
 
     k  = " ".join(string) 
     k.lower()
@@ -132,7 +133,6 @@ def index():
 
     if request.method == "POST":
         text = request.form["data"]
-        
         if text != '':
             k = text.split(". ")    
             for i in k:
@@ -151,7 +151,6 @@ def index():
                     r.set(string,"")
             
             keys = r.keys('*')
-            print(keys[0])
             x = 0
             value = []
 

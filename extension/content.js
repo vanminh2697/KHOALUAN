@@ -13,7 +13,7 @@ function sendMs() {
 			getName();
 			document.getElementById("click").onclick = function(){
 				document.getElementById("loader").style.display = "block";
-				document.getElementById("imf").innerHTML = "getting data............" ;
+				document.getElementById("imf").innerHTML = "GETTING DATA" ;
 				var x = send()
 			};
 			getT();
@@ -32,7 +32,7 @@ function getName(){
 function getT(){
 	chrome.runtime.onMessage.addListener(function(message){
 		if (message.action == 'hehe'){
-			document.getElementById("imf").innerHTML = "processing............" ;
+			document.getElementById("imf").innerHTML = "PROCESSING" ;
 		}
 	});
 }

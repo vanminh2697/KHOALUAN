@@ -192,7 +192,5 @@ input[type=text]:focus {
     100% { transform: rotate(360deg); }
 }
 .footer {
-  background-color: #f2ffff;
-  padding: 10px;
   text-align: center;
 }
