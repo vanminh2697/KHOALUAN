@@ -186,7 +186,7 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
     sess = tf.Session()
 
- 
+    index = 10
     x = 0
     with sess.as_default():
         model_name_ifold = model_name + "." + str(i_fold)
@@ -214,7 +214,8 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
                     f1_test, ys_pred, ys_true, loss_test = predict_step(sess, model, p, data, "test", crf_transition_parameters)
                     for i in range(len(seqs)): 
                         r.set(seqs[i],' '.join(ys_pred[i]))
-                    write_result(os.path.join(LOG_ROOT,model_name_ifold+".txt"), sents2, ys_true, ys_pred)
+                    write_result(os.path.join(LOG_ROOT,str(index)+".txt"), sents2, ys_true, ys_pred)
+                    index = index +1
             print(x)
             time.sleep(1)
 
