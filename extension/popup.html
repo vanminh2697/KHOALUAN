@@ -3,40 +3,42 @@
 	<head>
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
-	</head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<body style="background-color: #f2ffff; width: 600px; height: 200px">
-		<div class="scroll-left">
+		<div class = "container"> 
+		<!-- <div class="scroll-left">
 			<p>Welcome to My extension</p>
+		</div> -->
+		<div> 
+			<h2 style="text-align:center">REVIEW LAPTOP</h2>
 		</div>
-		
-		<div class="timkiem" style="float:left;">
-		  	<p>Search: <input id = "input" type="text" name="search" placeholder="Search.."></p>
-		</div>
-		<br>
+
 		<div class="sapxep" style="float:right;">
-		  <button class="sapxepbtn">Low to high</button>
-		  <div class="sapxep-content">
-			  <a id = "de_pos">Positive</a>
-			  <a id = "de_neu">Neutral</a>
-			  <a id = "de_neg">Negative</a>
+			<button class="sapxepbtn">Low to high</button>
+			<div class="sapxep-content">
+				<a id = "de_pos">Positive</a>
+				<a id = "de_neu">Neutral</a>
+				<a id = "de_neg">Negative</a>
+			</div>
 		  </div>
-		</div>
-		<div class="sapxep"style="float:right;">
-		  <button class="sapxepbtn">High to low</button>
-		  <div class="sapxep-content">
-			  <a id = "in_pos">Positive</a>
-			  <a id = "in_neu">Neutral</a>
-			  <a id = "in_neg">Negative</a>
+		  <div class="sapxep"style="float:right;">
+			<button class="sapxepbtn">High to low</button>
+			<div class="sapxep-content">
+				<a id = "in_pos" >Positive</a>
+				<a id = "in_neu">Neutral</a>
+				<a id = "in_neg">Negative</a>
+			</div>
 		  </div>
+		<div class="timkiem" style="float:left;">
+		  	<input id = "input" type="text" name="search" placeholder="Search..">
 		</div>
-		<div class="sapxep" style="float:right; width: 60px; height: 60px;">
-		  <h2>SORT</h2>
-		</div>
-		<p id ="tong"></p>
 		<br>
+		<br>
+		
+		<!-- <br>
 		<p id = "nameProduct"></p>
-		<br>
-		<table id ="result">
+		<br> -->
+		<table id ="result" class="table table-striped">
 			<tr>
 				<th>Aspect</th>
 				<th>Postive</th>
@@ -44,18 +46,18 @@
 				<th>Neutral</th>
 			</tr>
 		</table>
+		<div class="col text-center">
+			<button id = "click" style="float:center;">Start</button>
+		 </div>
 		<br>
-		<button id = "click" style="float:left;">Start</button>
-		<button id = "fb" style="float:right;">Feedback</button>
-		<br>
-		<br>
-		<br>
-		<br>
-		<div id="loader"></div>
-		<br>
-		<p id = "imf"></p>
+		<div class="footer">
+		  	<div id="loader" style="height: 30px; width: 30px"></div>
+			<br>
+			<p id = "imf" style="text-align:center;color: red" ></p>
+		</div>
 		
 		<p id = "url" title="Tab Current"></p>
 		<p id = "hihi"></p>
+	</div>
 	</body>
 </html>
