@@ -55,9 +55,9 @@ function send(){
 				var result = JSON.parse(server);
 				result.sort(SortByDePOS);
 				// document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
-				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> </tr>"
+				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> <th>Total</th> </tr>"
 				for(var i = 0;i<result.length; i++){
-					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"%</td> </tr>" ;
+					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"%</td> <td>"+ result[i].Total +"</td></tr>" ;
 				}
 			}
 			document.getElementById("result").innerHTML = text ;

@@ -92,7 +92,7 @@ def caculation(keys,results):
         x = round((Value[i][0]/Value[i][3])*100)
         y = round((Value[i][1]/Value[i][3])*100)
         z = round((Value[i][2]/Value[i][3])*100)
-        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z}
+        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z , "Total": Value[i][3]}
         json_results.append(temp)
     return json_results
 
