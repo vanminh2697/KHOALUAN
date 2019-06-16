@@ -1,253 +1,62 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<style>
-			a{
-				text-decoration: none;
-			}
-			a:hover{
-				text-decoration: underline;
-			}
-			p[id ="url"]{
-		 		white-space: nowrap; 
-		 		width: 600px;
-		 		height: 20px;
-		 		border: 3px solid #73AD21;
-		 		border-style: double;
-		 		overflow: hidden;
-		 		text-overflow: ellipsis;
-		 	}
-		 	table{
-		 		border-collapse: collapse;
-  				width: 100%;
-		 	} 
-		 	th, td{
-		 		padding: 8px;
-  				text-align: center;
-  				border-bottom: 1px solid #ddd;
-				margin: auto;
-			}
-			tr:hover {background-color:#f5f5f5;}
-			th {
-			  background-color: #4CAF50;
-			  color: white;
-			}
-			button{
-			    background-color: #a3e0ff;
-			    border: #ff0066;
-			    color: black;
-			  	padding: 15px 32px;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 16px;
-				cursor: pointer;
-				box-shadow: 0 8px 10px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
-			}
-			.scroll-left{
-				width: 600px;
-				height: 30px; 
-				overflow: hidden;
-				position: relative;
-				border: 3px dotted #73AD21;
-			 	border-style: dotted;
-			}
-			.scroll-left p{
-				position: absolute;
-				width: 80%;
-				height: 30%;
-				margin: 0;
-				line-height: 30px;
-				text-align: center;
-				text-shadow: 1px 1px 2px black, 0 0 25px blue, 0 0 5px darkblue;
-				/* Starting position */
-				-moz-transform:translateX(100%);
-				-webkit-transform:translateX(100%); 
-				transform:translateX(100%);
-				/* Apply animation to this element */ 
-				-moz-animation: scroll-left 10s linear infinite;
-				-webkit-animation: scroll-left 10s linear infinite;
-				animation: scroll-left 10s linear infinite;
-			}
-				/* Move it (define the animation) */
-			@-moz-keyframes scroll-left{
-				0%{ -moz-transform: translateX(100%); }
-				100%{ -moz-transform: translateX(-100%); }
-			}
-			@-webkit-keyframes scroll-left{
-				0%{ -webkit-transform: translateX(100%); }
-				100%{ -webkit-transform: translateX(-100%); }
-			}
-			@keyframes scroll-left{
-				0%{ 
-					-moz-transform: translateX(100%); /* Browser bug fix */
-					-webkit-transform: translateX(100%); /* Browser bug fix */
-					transform: translateX(100%); 
-				}
-				100%{ 
-					-moz-transform: translateX(-100%); /* Browser bug fix */
-					-webkit-transform: translateX(-100%); /* Browser bug fix */
-					transform: translateX(-100%); 
-				}
-			}
-			.sapxep {
-			 	position: relative;
-			  	display: inline-block;
-			}
-
-			.sapxep-content {
-			  	display: none;
-			  	position: absolute;
-			  	background-color: #f9f9f9;
-			  	min-width: 70px;
-			  	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-			  	z-index: 1;
-			}
-
-			.sapxep-content a {
-			  	color: black;
-			  	padding: 10px 10px;
-			  	text-decoration: none;
-			  	display: block;
-			  	text-align: center;
-			}
-			.sapxep-content a:hover {background-color: #f1f1f1}
-
-			.sapxep:hover .sapxep-content {
-			  	display: block;
-			}
-
-			.sapxep:hover .sapxepbtn {
-			  	background-color: #3e8e41;
-			}
-			.sapxepbtn {
-				background-color: #a3e0ff;
-			    border: #ff0066;
-			    color: black;
-			  	padding: 10px 10px;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 10px;
-				cursor: pointer;
-			}
-			a{
-			    border: #ff0066;
-			    color: black;
-			  	padding: 10px 10px;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 10px;
-				cursor: pointer;
-			}
-			.timkiem {
-			 	position: relative;
-			  	display: inline-block;
-			}
-			.timkiembtn {
-				background-color: #a3e0ff;
-			    color: black;
-			    position: absolute;
-			    padding: 10px 10px;
-				text-align: center;
-				text-decoration: none;
-				display: inline-block;
-				font-size: 10px;
-				cursor: pointer;
-				border: none;
-			}
-			input[type=text] {
-			  	width: 130px;
-			  	box-sizing: border-box;
-			  	border: 2px solid #ccc;
-			  	border-radius: 15px;
-			  	font-size: 16px;
-			  	background-color: white;
-			  	padding: 5px 20px 5px 10px;
-			  	-webkit-transition: width 0.4s ease-in-out;
-			  	transition: width 0.4s ease-in-out;
-			}
-
-			input[type=text]:focus {
-			  	width: 80%;
-			}
-			#loader {
-				position: absolute;
-			  	display: none;
-			  	border: 5px solid #f3f3f3;
-			  	border-radius: 50%;
-			  	border-top: 5px solid blue;
-			  	border-bottom: 5px solid blue;
-			  	width: 10px;
-			  	height: 10px;
-			  	-webkit-animation: spin 2s linear infinite;
-			  	animation: spin 2s linear infinite;
-			}
-			@-webkit-keyframes spin {
-			  	0% { -webkit-transform: rotate(0deg); }
-			  	100% { -webkit-transform: rotate(360deg); }
-			}
-
-			@keyframes spin {
-			 	0% { transform: rotate(0deg); }
-			  	100% { transform: rotate(360deg); }
-			}
-		</style>
+		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
-	</head>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 	<body style="background-color: #f2ffff; width: 600px; height: 200px">
-		<div class="scroll-left">
+		<div class = "container"> 
+		<!-- <div class="scroll-left">
 			<p>Welcome to My extension</p>
+		</div> -->
+		<div> 
+			<h2 style="text-align:center">REVIEW LAPTOP</h2>
 		</div>
-		
-		<div class="timkiem" style="float:left;">
-		  	<p>Search: <input id = "input" type="text" name="search" placeholder="Search.."></p>
-		</div>
-		<br>
+
 		<div class="sapxep" style="float:right;">
-		  <button class="sapxepbtn">Low to high</button>
-		  <div class="sapxep-content">
-			  <a id = "de_pos">Positive</a>
-			  <a id = "de_neu">Neutral</a>
-			  <a id = "de_neg">Negative</a>
+			<button class="sapxepbtn">Low to high</button>
+			<div class="sapxep-content">
+				<a id = "de_pos">Positive</a>
+				<a id = "de_neu">Neutral</a>
+				<a id = "de_neg">Negative</a>
+			</div>
 		  </div>
-		</div>
-		<div class="sapxep"style="float:right;">
-		  <button class="sapxepbtn">High to low</button>
-		  <div class="sapxep-content">
-			  <a id = "in_pos">Positive</a>
-			  <a id = "in_neu">Neutral</a>
-			  <a id = "in_neg">Negative</a>
+		  <div class="sapxep"style="float:right;">
+			<button class="sapxepbtn">High to low</button>
+			<div class="sapxep-content">
+				<a id = "in_pos" >Positive</a>
+				<a id = "in_neu">Neutral</a>
+				<a id = "in_neg">Negative</a>
+			</div>
 		  </div>
+		<div class="timkiem" style="float:left;">
+		  	<input id = "input" type="text" name="search" placeholder="Search..">
 		</div>
-		<div class="sapxep" style="float:right; width: 40px">
-		  <p>Sort:</p>
-		</div>
-		<p id ="tong"></p>
 		<br>
-		<p id = "nameProduct"></p>
 		<br>
-		<table id ="result">
+		
+
+		<table id ="result" class="table table-striped">
 			<tr>
 				<th>Aspect</th>
 				<th>Postive</th>
 				<th>Negative</th>
 				<th>Neutral</th>
+				<th>Total</th>
 			</tr>
 		</table>
+		<div class="col text-center">
+			<button id = "click" style="float:center;">Start</button>
+		 </div>
 		<br>
-		<button id = "click" style="float:left;">Start</button>
-		<button id = "fb" style="float:right;">Feedback</button>
-		<br>
-		<br>
-		<br>
-		<br>
-		<div id="loader"></div>
-		<br>
-		<p id = "imf"></p>
+		<div class="footer">
+		  	<div id="loader" style="height: 30px; width: 30px"></div>
+			<br>
+			<p id = "imf" style="text-align:center;color: red" ></p>
+		</div>
 		
 		<p id = "url" title="Tab Current"></p>
 		<p id = "hihi"></p>
+	</div>
 	</body>
 </html>

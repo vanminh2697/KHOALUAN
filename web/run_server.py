@@ -86,12 +86,13 @@ def caculation(keys,results):
                             Value[i][2] += 1
                             Value[i][3] += 1      
     json_results = [] 
+    Aspects = [element.upper() for element in Aspects ]
     for i in range(n):
         aspect = Aspects[i]
         x = round((Value[i][0]/Value[i][3])*100)
         y = round((Value[i][1]/Value[i][3])*100)
         z = round((Value[i][2]/Value[i][3])*100)
-        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z}
+        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z , "Total": Value[i][3]}
         json_results.append(temp)
     return json_results
 
@@ -100,7 +101,7 @@ def pre_process(str):
     # # handing double space
     str = re.sub(r'([-()#$%^&*]+)', "", str)
     str = re.sub(r'([,?!.:]{2,})', r'.', str)
-    str = re.sub(r'([,?!.:])', r' \1 ', str)
+    str = re.sub(r'([,?!.:;])', r' \1 ', str)
     str = re.sub(r'\d{2,4}(\/\d{1,2})+|(\d{1,2}\/)+\d{2,4}', "", str)
     str = re.sub(r'\w+\@\w+(\.\w+)+', "", str)
     str = re.sub(r'[^\x00-\x7f]', "", str)
@@ -112,9 +113,10 @@ def pre_process(str):
     string =[]
     for i in t: 
         if i !='' and i !="\n":
-            string.append(i)
+            string.append(i.lower())
 
     k  = " ".join(string) 
+    k.lower()
     return k
 
     
@@ -126,8 +128,9 @@ def index():
     r.flushall()
 
     A = []
+
     # save seq to database
-    print ("pre_process...")
+
     if request.method == "POST":
         text = request.form["data"]
         if text != '':
@@ -148,10 +151,8 @@ def index():
                     r.set(string,"")
             
             keys = r.keys('*')
-            print(keys[0])
             x = 0
             value = []
-            print("complete preprocess....")
 
             if(len(keys)> 0):
                 while True:

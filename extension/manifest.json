@@ -1,9 +1,10 @@
 {
     "manifest_version":2,
-    "name": "Ungdung",
+    "name": "Review Laptop",
     "version":"1.0",
     "browser_action":{
-     "default_popup":"popup.html"
+     "default_popup":"popup.html",
+     "default_icon": "ga.png"
     },
     "content_scripts":[
      {
@@ -19,5 +20,6 @@
     },
     "externally_connectable": {
       "matches": ["http://localhost:5000/"]
-    }
+    },
+    "content_security_policy":"script-src 'self' https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js; object-src 'self'"
    }

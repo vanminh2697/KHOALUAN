@@ -52,7 +52,7 @@ chrome.runtime.onMessage.addListener(function(message){
 			})
 
 		}
-		getImageAndName(getLink());
+		// getImageAndName(getLink());
 	    async function getData(urlE){
 	    	if(urlE != null){
 		    	while(className == 'a-last'){
