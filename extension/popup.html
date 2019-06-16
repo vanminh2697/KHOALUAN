@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="utf-8">
 		<link rel="stylesheet" type="text/css" href="style.css">
 		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">	
 	<body style="background-color: #f2ffff; width: 600px; height: 200px">
-		<div class = "container"> 
-		<!-- <div class="scroll-left">
-			<p>Welcome to My extension</p>
-		</div> -->
+		<div class = "container">
 		<div> 
 			<h2 style="text-align:center">REVIEW LAPTOP</h2>
 		</div>
@@ -34,9 +32,8 @@
 		</div>
 		<br>
 		<br>
-		
-
-		<table id ="result" class="table table-striped">
+		<table id="result" class="table table-striped">
+			<thead>
 			<tr>
 				<th>Aspect</th>
 				<th>Postive</th>
@@ -44,7 +41,13 @@
 				<th>Neutral</th>
 				<th>Total</th>
 			</tr>
+			</thead>
+			<tbody id ="show">
+			</tbody>
+			<tbody id="show1" class="collapse">
+			</tbody>	
 		</table>
+		<button id ="btnshow"type="button" class="btn btn-info" data-toggle="collapse" data-target="#show1" aria-expanded ="true">Xem thêm</button>
 		<div class="col text-center">
 			<button id = "click" style="float:center;">Start</button>
 		 </div>
@@ -54,9 +57,10 @@
 			<br>
 			<p id = "imf" style="text-align:center;color: red" ></p>
 		</div>
-		
 		<p id = "url" title="Tab Current"></p>
 		<p id = "hihi"></p>
 	</div>
+	<script src="jquery-3.4.1.min.js" ></script>
+    <script src="bootstrap.min.js"></script>
 	</body>
 </html>

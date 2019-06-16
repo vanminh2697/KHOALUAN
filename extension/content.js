@@ -1,6 +1,7 @@
 
 sendMs();
 function sendMs() {
+	document.getElementById('btnshow').style.visibility='hidden'
 	console.log("popup.js > run.js");
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 	 	chrome.tabs.sendMessage(tabs[0].id, {greeting:"hello" }, function(response) {
@@ -36,6 +37,7 @@ function getT(){
 		}
 	});
 }
+var result ;
 function send(){
 	var x = chrome.runtime.sendMessage({
 		'action': 'submit the form',
@@ -49,32 +51,43 @@ function send(){
 			console.log(message.action)
 			console.log(server)
 			if(server == "Can not find reviews from Web page"){
-				text = "<dt>" + server+"</dt>";
+				text = "<dt>"+server+"</dt>";
 			}
 			else{			
 				var result = JSON.parse(server);
-				result.sort(SortByDePOS);
-				// document.getElementById("tong").innerHTML =  "Tong sô khia canh "+  result.length
-				text = "<tr> <th>Aspect</th> <th>Postive</th> <th>Negative</th> <th>Neutral</th> <th>Total</th> </tr>"
-				for(var i = 0;i<result.length; i++){
-					text += "<tr> <td>"+ "laptop#"  + result[i].aspect+ "<td>" +result[i].POS +"%<td>"+ result[i].NEG+ "%</td> <td>"+ result[i].NEU +"%</td> <td>"+ result[i].Total +"</td></tr>" ;
+				text ="<tr><td>"+result[0].aspect+"<td>"+result[0].POS+"%<td>"+result[0].NEG+"%</td><td>"+result[0].NEU+"%</td><td>"+result[0].Total+"</td></tr>";
+				text1 =""
+				for(var i = 1;i<result.length; i++){
+					if (result[i].aspect != "NOT"){
+						text +="<tr><td>"+result[i].aspect+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
+					}
+					else {
+						for(var j= i +1 ; j<result.length; j++){
+							text1 +="<tr><td>"+result[j].aspect+"<td>"+result[j].POS+"%<td>"+result[j].NEG+"%</td><td>"+result[j].NEU+"%</td><td>"+result[j].Total+"</td></tr>";
+						}
+						break;
+					}
 				}
 			}
-			document.getElementById("result").innerHTML = text ;
+			document.getElementById('btnshow').style.visibility='visible';
+			document.getElementById("show").innerHTML = text ;
+			document.getElementById("show1").innerHTML = text1 ;
 			document.getElementById("loader").style.display = "none";
 			document.getElementById("imf").innerHTML = "" ;
 		}
 	});
+}
+document.getElementById("btnshow").onclick = function(result){
+	document.getElementById('btnshow').style.visibility='hidden';
 }
 function SortByDePOS(x,y) {
     return y.POS - x.POS; 
 }
 
 document.getElementById("de_pos").onclick = function(){
-//function funcDePos(){
 	var table = document.getElementById("result");
 	var i, j, rows;
-	rows = table.rows;
+	rows = table.rows;	
 	for(i = 1; i < rows.length - 1; i++){
 		for(j = i + 1; j < rows.length; j++){
 			x = rows[i].getElementsByTagName("TD")[1];
@@ -84,10 +97,9 @@ document.getElementById("de_pos").onclick = function(){
 			}
 		}
 	}
-
 }
+
 document.getElementById("de_neu").onclick = function(){
-//function funcDeNeu(){
 	var table = document.getElementById("result");
 	var i, j, rows;
 	rows = table.rows;
@@ -101,7 +113,6 @@ document.getElementById("de_neu").onclick = function(){
 		}
 	}
 }
-//function funcDeNeg(){
 document.getElementById("de_neg").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -116,7 +127,6 @@ document.getElementById("de_neg").onclick = function(){
 		}
 	}
 }
-//function funcInPos(){
 document.getElementById("in_pos").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -131,7 +141,6 @@ document.getElementById("in_pos").onclick = function(){
 		}
 	}
 }
-//function funcInNeu(){
 document.getElementById("in_neu").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -146,7 +155,6 @@ document.getElementById("in_neu").onclick = function(){
 		}
 	}
 }
-//function funcInNeg(){
 document.getElementById("in_neg").onclick = function(){
 	var table = document.getElementById("result");
 	var i, j, rows;
@@ -161,7 +169,6 @@ document.getElementById("in_neg").onclick = function(){
 		}
 	}
 }
-//function Search(){
 document.getElementById("input").onkeyup = function(){
 	var input, filter, table, rows, name, i, txtValue;
 	input = document.getElementById("input");

@@ -186,7 +186,7 @@ def load_model(data_name="laptops", task_name="ATEPC", params_str = "w2v,150,200
 
     sess = tf.Session()
 
-    index = 16
+    index = 17
     x = 0
     with sess.as_default():
         model_name_ifold = model_name + "." + str(i_fold)
