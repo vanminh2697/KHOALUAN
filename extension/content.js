@@ -14,7 +14,7 @@ function sendMs() {
 			getName();
 			document.getElementById("click").onclick = function(){
 				document.getElementById("loader").style.display = "block";
-				document.getElementById("imf").innerHTML = "GETTING DATA" ;
+				document.getElementById("imf").innerHTML = "Please waiting..." ;
 				var x = send()
 			};
 			getT();
