@@ -1,66 +1,89 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<link rel="stylesheet" type="text/css" href="style.css">
-		<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">	
-	<body style="background-color: #f2ffff; width: 600px; height: 200px">
-		<div class = "container">
-		<div> 
-			<h2 style="text-align:center; margin: 20px">REVIEW LAPTOP</h2>
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="style.css">
+	<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+
+<body style="background-color: #f2ffff; width: 600px; height: 200px">
+	<div class="container-fluid">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-sm-8">
+					<h2 style="text-align:center; margin: 15px" key="REVIEW" class="lang">REVIEW LAPTOP</h2>
+				</div>
+				<div class="col-sm-4">
+					<div class="input-group" style="margin:15px;">
+						<div class="input-group-prepend">
+							<label class="input-group-text lang" for="inputGroupSelect01" key="language"
+								style="width:90px;">Language</label>
+						</div>
+						<select class="form-control translate" id="inputGroupSelect01" style="margin:0px;">
+							<option value="en">US</option>
+							<option value="vi">VN</option>
+							<option value="ja">JP</option>
+						</select>
+					</div>
+				</div>
+			</div>
 		</div>
 
-		<div class="sapxep" style="float:right;">
-			<button class="sapxepbtn">Low to high</button>
-			<div class="sapxep-content">
-				<a id = "de_pos">Positive</a>
-				<a id = "de_neu">Neutral</a>
-				<a id = "de_neg">Negative</a>
-			</div>
-		  </div>
-		  <div class="sapxep"style="float:right;">
-			<button class="sapxepbtn">High to low</button>
-			<div class="sapxep-content">
-				<a id = "in_pos" >Positive</a>
-				<a id = "in_neu">Neutral</a>
-				<a id = "in_neg">Negative</a>
-			</div>
-		  </div>
-		<div class="timkiem" style="float:left;">
-		  	<input id = "input" type="text" name="search" placeholder="Search..">
+		<div class="timkiem " style="float:left;">
+			<input id="input" type="text" name="search" placeholder="Search.." key="search" class="lang">
 		</div>
-		<br>
-		<br>
+		<div class="sapxep " style="float:right;">
+			<button class="sapxepbtn lang button" key="low">Low to high</button>
+			<div class="sapxep-content">
+				<a id="de_pos" key="positive" class="lang">Positive</a>
+				<a id="de_neu" key="neutral" class="lang">Neutral</a>
+				<a id="de_neg" key="negative" class="lang">Negative</a>
+			</div>
+		</div>
+		<div class="sapxep" style="float:right;">
+			<button class="sapxepbtn lang button" key="high">High to low</button>
+			<div class="sapxep-content">
+				<a id="in_pos" key="positive" class="lang">Positive</a>
+				<a id="in_neu" key="neutral" class="lang">Neutral</a>
+				<a id="in_neg" key="negative" class="lang">Negative</a>
+			</div>
+		</div>
 		<table id="result" class="table table-striped">
 			<thead>
-			<tr>
-				<th>Aspect</th>
-				<th>Postive</th>
-				<th>Negative</th>
-				<th>Neutral</th>
-				<th>Total</th>
-			</tr>
+				<tr>
+					<th key="aspect" class="lang">Aspect</th>
+					<th key="positive" class="lang">Positive</th>
+					<th key="negative" class="lang">Negative</th>
+					<th key="neutral" class="lang">Neutral</th>
+					<th key="total" class="lang">Total</th>
+				</tr>
 			</thead>
-			<tbody id ="show">
+			<tbody id="show">
 			</tbody>
 			<tbody id="show1" class="collapse">
-			</tbody>	
+			</tbody>
 		</table>
-		<button id ="btnshow"type="button" class="btn btn-info" data-toggle="collapse" data-target="#show1" aria-expanded ="true">Xem thêm</button>
+		<button id="btnshow" type="button" class="btn btn-info lang" data-toggle="collapse" data-target="#show1"
+			aria-expanded="true" key="seemore">See more </button>
+		<button id="btn_hidden" type="button" class="btn btn-info lang" style="float: right;" data-toggle="collapse"
+			data-target="#show1" aria-expanded="true" key="hidden">Ẩn bớt</button>
 		<div class="col text-center">
-			<button id = "click" style="float:center;">Start</button>
-		 </div>
+			<button id="click" style="float:center;" key="start" class="lang button">Start</button>
+		</div>
 		<br>
 		<div class="footer">
-		  	<div id="loader" style="height: 30px; width: 30px"></div>
+			<div id="loader" style="height: 30px; width: 30px"></div>
 			<br>
-			<p id = "imf" style="text-align:center;color: red" ></p>
+			<p id="imf" style="text-align:center;color: red"></p>
 		</div>
-		<p id = "url" title="Tab Current"></p>
-		<p id = "hihi"></p>
+		<p id="url" title="Tab Current"></p>
 	</div>
-	<script src="jquery-3.4.1.min.js" ></script>
-    <script src="bootstrap.min.js"></script>
-	</body>
+	<script src="jquery-3.4.1.min.js"></script>
+	<!-- <script src="bootstrap.min.js"></script> -->
+	<script src="jquery.min.js"></script>
+	<script src="bootstrap.bundle.min.js"></script>
+</body>
+
 </html>

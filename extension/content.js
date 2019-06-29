@@ -2,6 +2,7 @@
 sendMs();
 function sendMs() {
 	document.getElementById('btnshow').style.visibility='hidden'
+	document.getElementById('btn_hidden').style.visibility='hidden'
 	console.log("popup.js > run.js");
 	chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
 	 	chrome.tabs.sendMessage(tabs[0].id, {greeting:"hello" }, function(response) {
@@ -30,14 +31,28 @@ function getName(){
 		}
 	});
 }
-function getT(){
+function getT(){ 
 	chrome.runtime.onMessage.addListener(function(message){
 		if (message.action == 'hehe'){
 			document.getElementById("imf").innerHTML = "PROCESSING" ;
 		}
 	});
 }
-var result ;
+var tableShow = ""
+var tableHidden =""
+var listAspect =["PRICE", "FEATURES","VALUE"]
+
+function isListAspect(name){
+	console.log(name)
+	for (var i = 0;i<listAspect.length; i++){
+		console.log(listAspect[i])
+		if(name.localeCompare(listAspect[i]) === 0) {
+			console.log(listAspect[i] + " + " + name)
+			return true 
+		}
+	}
+	return false
+}
 function send(){
 	var x = chrome.runtime.sendMessage({
 		'action': 'submit the form',
@@ -53,32 +68,39 @@ function send(){
 			if(server == "Can not find reviews from Web page"){
 				text = "<dt>"+server+"</dt>";
 			}
-			else{			
+			else{
 				var result = JSON.parse(server);
-				text ="<tr><td>"+result[0].aspect+"<td>"+result[0].POS+"%<td>"+result[0].NEG+"%</td><td>"+result[0].NEU+"%</td><td>"+result[0].Total+"</td></tr>";
-				text1 =""
-				for(var i = 1;i<result.length; i++){
-					if (result[i].aspect != "NOT"){
-						text +="<tr><td>"+result[i].aspect+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
+				var e = document.getElementById("inputGroupSelect01");
+				var lang = e.options[e.selectedIndex].value;
+				console.log(lang)
+				for(var i = 0;i<result.length; i++){
+					x = isListAspect(result[i].aspect)
+					if(x === true){
+						console.log("lang " + arrLang[lang][result[i].aspect])
+						tableShow +="<tr><td " + "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 					}
 					else {
-						for(var j= i +1 ; j<result.length; j++){
-							text1 +="<tr><td>"+result[j].aspect+"<td>"+result[j].POS+"%<td>"+result[j].NEG+"%</td><td>"+result[j].NEU+"%</td><td>"+result[j].Total+"</td></tr>";
-						}
-						break;
+						tableHidden +="<tr><td>"+result[i].aspect+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 					}
 				}
 			}
 			document.getElementById('btnshow').style.visibility='visible';
-			document.getElementById("show").innerHTML = text ;
-			document.getElementById("show1").innerHTML = text1 ;
+			document.getElementById("show").innerHTML = tableShow ;
 			document.getElementById("loader").style.display = "none";
 			document.getElementById("imf").innerHTML = "" ;
 		}
 	});
 }
-document.getElementById("btnshow").onclick = function(result){
+document.getElementById("btnshow").onclick = function(){
 	document.getElementById('btnshow').style.visibility='hidden';
+	document.getElementById('btn_hidden').style.visibility='visible';
+	document.getElementById("show1").innerHTML = tableHidden;
+}
+document.getElementById("btn_hidden").onclick = function(){
+	document.getElementById("show").innerHTML = tableShow ;
+	document.getElementById("show1").innerHTML = "" ;
+	document.getElementById('btnshow').style.visibility='visible';
+	document.getElementById('btn_hidden').style.visibility='hidden';
 }
 function SortByDePOS(x,y) {
     return y.POS - x.POS; 

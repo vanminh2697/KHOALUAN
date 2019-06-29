@@ -9,7 +9,6 @@ chrome.runtime.onMessage.addListener(function(message){
 			return "/"+string[3] + text + string[5];
 		}
 		function regexURL(url){
-			//console.log(url)
 			return url.split(new RegExp('/'));
 		}
 		var className = "a-last";
@@ -50,7 +49,6 @@ chrome.runtime.onMessage.addListener(function(message){
 				'action': 'haha',
 				'data' : name
 			})
-
 		}
 		// getImageAndName(getLink());
 	    async function getData(urlE){
@@ -73,7 +71,6 @@ chrome.runtime.onMessage.addListener(function(message){
 				    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
 				}
 				console.log(comments);
-				// console.log("complete");
 				return comments;
 			}else{
 				console.log("không tìm thấy sản phẩm");

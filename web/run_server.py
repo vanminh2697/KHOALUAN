@@ -12,7 +12,28 @@ app = Flask(__name__)
 
 r = StrictRedis(host='localhost', port=6379, db=0)
 
-
+def combineAspect(Aspects, Value):
+    listEng = ["es","s"]
+    for i in range(len(Aspects)):
+        aspect = Aspects[i]
+        if(aspect != "null"):
+            j = 2
+            while (j>0):
+                temp = aspect[len(aspect)-j: len(aspect)]
+                if(temp in listEng):
+                    aspectTemp = aspect[:len(aspect)-j]
+                    print(aspectTemp)
+                    for k in Aspects:
+                         if(k!= aspect and aspectTemp == k):
+                             index = Aspects.index(k)
+                             Value[index][0] = Value[index][0] + Value[i][0]
+                             Value[index][1] = Value[index][1] + Value[i][1]
+                             Value[index][2] = Value[index][2] + Value[i][2]
+                             Value[index][3] = Value[index][3] + Value[i][3]
+                             Aspects[i] = "null"
+                    break
+                j -= 1
+    print(Aspects)
 def caculation(keys,results):
     Aspects = []
 
@@ -21,10 +42,7 @@ def caculation(keys,results):
     for i in range(len(keys)):
         string = keys[i].split(' ')
         rs = results[i].split(' ')
-        # print(string)
-        # print (rs)
-        # print (len(string))
-        # print (len(rs))
+
         j = 0
         while j < len(rs):
             if rs[j] != 'O':
@@ -37,9 +55,10 @@ def caculation(keys,results):
                     Aspects.append(aspect)
             j +=1
     
-    print(Aspects)
+    # print(Aspects)
 
-    # calucation Value
+    # calucation Value for Aspect
+
     # 1: positive 
     # 0: Negative 
     # 2: neutral
@@ -86,21 +105,19 @@ def caculation(keys,results):
                             Value[i][2] += 1
                             Value[i][3] += 1      
     json_results = [] 
-    Aspects = [element.upper() for element in Aspects ]
+    Aspects = [element.upper() for element in Aspects]
+    combineAspect(Aspects,Value)
     for i in range(n):
-        if i == 5:
-            temp = {"aspect": "NOT", "POS": 0, "NEG": 0 , "NEU": 0 , "Total": 0}
-        else:
+        if Aspects[i] != "null":
             x = round((Value[i][0]/Value[i][3])*100)
             y = round((Value[i][1]/Value[i][3])*100)
             z = round((Value[i][2]/Value[i][3])*100)
             temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z , "Total": Value[i][3]}
-        json_results.append(temp)
+            json_results.append(temp)
     return json_results
 
-
 def pre_process(str):
-    # # handing double space
+    # handing double space
     str = re.sub(r'([-()#$%^&*]+)', "", str)
     str = re.sub(r'([,?!.:]{2,})', r'.', str)
     str = re.sub(r'([,?!.:;])', r' \1 ', str)
@@ -111,13 +128,13 @@ def pre_process(str):
     str = re.sub(r'(\'(\w{1,2})|(n\'t))', r' \1', str)
     str = re.sub("\"", " inch", str)
     str = re.sub("/", " / ", str)
+    
     t = str.split(' ')
     string =[]
     for i in t: 
-        if i !='' and i !="\n":
+        if i !='' and i !="\n" and i !="." and i != ":":
             string.append(i.lower())
-
-    k  = " ".join(string) 
+    k  = " ".join(string)
     k.lower()
     return k
 
@@ -132,26 +149,28 @@ def index():
     A = []
 
     # save seq to database
-
     if request.method == "POST":
         text = request.form["data"]
+        print(text)
         if text != '':
             k = text.split(". ")    
             for i in k:
                 z = pre_process(i)
-                z = z.split('. ')
+    # If sequence have "\n"
+                z = z.splitlines()
                 if len(z) > 1:
                     for j in z: 
-                        A.append(j.split(' '))
+                        if(j != " "):
+                            A.append(j.split(' '))
                 else:
                     A.append(z[0].split(' '))
-
+                # A.append(z.split(' '))
+                
             for i in A:
                 size = len(i)
                 if size <83 and size > 1:
                     string = " ".join(i)
                     r.set(string,"")
-            
             keys = r.keys('*')
             x = 0
             value = []
@@ -159,9 +178,7 @@ def index():
             if(len(keys)> 0):
                 while True:
                     temp = r.get(keys[0])
-                    print(temp)
                     if (len(temp.split())>=1):
-                        print("YES")
                         results = []
                         for i in keys: 
                             rs = r.get(i)
@@ -172,9 +189,8 @@ def index():
                             break 
                     x +=1 
                     time.sleep(1)
-                    print x
+                    # print x
             json_results = caculation(keys, value)
-            # print(json_results)
             return json.dumps(json_results)
         else: 
             return "Can not find reviews from Web page"
