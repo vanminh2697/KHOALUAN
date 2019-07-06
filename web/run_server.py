@@ -9,9 +9,63 @@ import os
 import json
 app = Flask(__name__)
 # connect with database
+import gensim.downloader as api
+word_vectors = api.load("glove-wiki-gigaword-100")  # load pre-trained word-vectors from gensim-data
 
+def similarity(tag):
+    tag = tag.split()
+    score = 0
+    lb = ""
+    with open("data.txt") as f:
+        for line in f:
+            line = line.split(":")
+            str = line[1].split()
+            t = line[0].lower()
+            t = t.split()
+            sim = word_vectors.n_similarity(tag, t)
+            if(sim > 0.6 and sim > score):
+                lb = t
+                score = sim
+            for i in str:
+                i = i.lower()
+                i = i.split("-")
+                sim = word_vectors.n_similarity(tag, i)
+                #print("{:.4f}".format(sim))
+                if(sim > 0.6 and sim > score):
+                    lb = t
+                    score = sim
+    return ''.join(lb)
 r = StrictRedis(host='localhost', port=6379, db=0)
-
+def combineAspect_1(Aspects, Value):
+        tag_temp = []
+        tag_value = []
+        check = 0
+        for i in range(len(Aspects)):
+            aspect = Aspects[i].lower()
+            #print(aspect)
+            tag = similarity(aspect)
+            #print(tag)
+            if(i == 0):
+                tag_temp.append(tag)
+                tag_value.append(Value[i])
+                #print(tag_temp)
+                #print(tag_value)
+            else:
+                for j in tag_temp:
+                    #print(j)
+                    if tag == j:
+                        check = 1
+                        index = tag_temp.index(tag)
+                        #print(index)
+                        tag_value[index][0] += Value[i][0]
+                        tag_value[index][1] += Value[i][1]
+                        tag_value[index][2] += Value[i][2]
+                        tag_value[index][3] += Value[i][3]
+                if (check == 0):
+                    tag_temp.append(tag)
+                    tag_value.append(Value[i])
+        Aspects = tag_temp
+        Value = tag_value
 def combineAspect(Aspects, Value):
     listEng = ["es","s"]
     for i in range(len(Aspects)):
@@ -106,7 +160,7 @@ def caculation(keys,results):
                             Value[i][3] += 1      
     json_results = [] 
     Aspects = [element.upper() for element in Aspects]
-    combineAspect(Aspects,Value)
+    combineAspect_1(Aspects,Value)
     for i in range(n):
         if Aspects[i] != "null":
             x = round((Value[i][0]/Value[i][3])*100)
