@@ -1,0 +1,22 @@
+Laptop:
+Display: monitor screen touch-screen 
+KeyBoard: keys power-button delete-key 
+Mouse: mouse-pad touch-pad the-buttons-on-it
+MotherBoard:
+CPU: processor
+Fan Cooling: fan cooling-system  heat-sink
+Ports: USB HDMI VGA card-reader Firewire SD DVI Thunderbolt
+Memory: ram 16-gb-of-ram
+Power Supply: charger charger-unit power-supply-cord adapter
+Optical Drives: CD DVD DVD-drive disc-drive DVD-burner
+Graphics: graphics-card video card graphics-chip
+Battery:
+Hard disk: hard-drive
+Multimedia Devices: sound audio microphone camera webcam speakers headphone
+Hardware:
+Software: microsoft art-program office-software master-program system-software Office iWork Mac-version-of-Microsoft-Office word-processor Word PowerPoint
+OS: Mac-Os
+Warranty:
+Shipping: delivery
+Support:  customer-service repair-service product-support replacement-policy the-staff
+Company: asus dell hp toshiba apple 
