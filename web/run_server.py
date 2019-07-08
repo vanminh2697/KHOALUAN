@@ -20,6 +20,7 @@ def get_unmatching_word(words):
             return False
     return True
 def similarity(tag):
+    tag = tag.lower()
     tag = tag.split()
     if get_unmatching_word(tag) == False:
         return ' '.join(tag)
