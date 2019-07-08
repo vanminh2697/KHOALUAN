@@ -40,7 +40,7 @@ function getT(){
 }
 var tableShow = ""
 var tableHidden =""
-var listAspect =["PRICE", "FEATURES","VALUE"]
+var listAspect =["LAPTOP","DISPLAY","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISK","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE"]
 
 function isListAspect(name){
 	console.log(name)
