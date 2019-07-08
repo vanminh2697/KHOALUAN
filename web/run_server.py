@@ -7,9 +7,10 @@ import codecs
 import execjs
 import os
 import json
+import gensim.downloader as api
 app = Flask(__name__)
 # connect with database
-import gensim.downloader as api
+r = StrictRedis(host='localhost', port=6379, db=0)
 word_vectors = api.load("glove-wiki-gigaword-100")  # load pre-trained word-vectors from gensim-data
 
 def similarity(tag):
@@ -29,13 +30,16 @@ def similarity(tag):
             for i in str:
                 i = i.lower()
                 i = i.split("-")
+                print("tag =")
+                print(tag)
+                print("i = ")
+                print(i)
                 sim = word_vectors.n_similarity(tag, i)
-                #print("{:.4f}".format(sim))
                 if(sim > 0.6 and sim > score):
                     lb = t
                     score = sim
     return ''.join(lb)
-r = StrictRedis(host='localhost', port=6379, db=0)
+
 def combineAspect_1(Aspects, Value):
         tag_temp = []
         tag_value = []
@@ -48,8 +52,6 @@ def combineAspect_1(Aspects, Value):
             if(i == 0):
                 tag_temp.append(tag)
                 tag_value.append(Value[i])
-                #print(tag_temp)
-                #print(tag_value)
             else:
                 for j in tag_temp:
                     #print(j)
@@ -66,28 +68,28 @@ def combineAspect_1(Aspects, Value):
                     tag_value.append(Value[i])
         Aspects = tag_temp
         Value = tag_value
-def combineAspect(Aspects, Value):
-    listEng = ["es","s"]
-    for i in range(len(Aspects)):
-        aspect = Aspects[i]
-        if(aspect != "null"):
-            j = 2
-            while (j>0):
-                temp = aspect[len(aspect)-j: len(aspect)]
-                if(temp in listEng):
-                    aspectTemp = aspect[:len(aspect)-j]
-                    print(aspectTemp)
-                    for k in Aspects:
-                         if(k!= aspect and aspectTemp == k):
-                             index = Aspects.index(k)
-                             Value[index][0] = Value[index][0] + Value[i][0]
-                             Value[index][1] = Value[index][1] + Value[i][1]
-                             Value[index][2] = Value[index][2] + Value[i][2]
-                             Value[index][3] = Value[index][3] + Value[i][3]
-                             Aspects[i] = "null"
-                    break
-                j -= 1
-    print(Aspects)
+# def combineAspect(Aspects, Value):
+#     listEng = ["es","s"]
+#     for i in range(len(Aspects)):
+#         aspect = Aspects[i]
+#         if(aspect != "null"):
+#             j = 2
+#             while (j>0):
+#                 temp = aspect[len(aspect)-j: len(aspect)]
+#                 if(temp in listEng):
+#                     aspectTemp = aspect[:len(aspect)-j]
+#                     print(aspectTemp)
+#                     for k in Aspects:
+#                          if(k!= aspect and aspectTemp == k):
+#                              index = Aspects.index(k)
+#                              Value[index][0] = Value[index][0] + Value[i][0]
+#                              Value[index][1] = Value[index][1] + Value[i][1]
+#                              Value[index][2] = Value[index][2] + Value[i][2]
+#                              Value[index][3] = Value[index][3] + Value[i][3]
+#                              Aspects[i] = "null"
+#                     break
+#                 j -= 1
+#     print(Aspects)
 def caculation(keys,results):
     Aspects = []
 
