@@ -74,8 +74,7 @@ def combineAspect_1(Aspects, Value):
                 if (check == 0):
                     tag_temp.append(tag)
                     tag_value.append(Value[i])
-        Aspects = tag_temp
-        Value = tag_value
+        return (tag_temp, tag_value)
 # def combineAspect(Aspects, Value):
 #     listEng = ["es","s"]
 #     for i in range(len(Aspects)):
@@ -170,7 +169,7 @@ def caculation(keys,results):
                             Value[i][3] += 1      
     json_results = [] 
     Aspects = [element.upper() for element in Aspects]
-    combineAspect_1(Aspects,Value)
+    Aspects , Value = combineAspect_1(Aspects,Value)
     for i in range(n):
         if Aspects[i] != "null":
             x = round((Value[i][0]/Value[i][3])*100)
