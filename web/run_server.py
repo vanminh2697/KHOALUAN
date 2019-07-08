@@ -12,29 +12,39 @@ app = Flask(__name__)
 import gensim.downloader as api
 word_vectors = api.load("glove-wiki-gigaword-100")  # load pre-trained word-vectors from gensim-data
 
+def get_unmatching_word(words):
+    for word in words:
+        if not word in word_vectors.wv.vocab:
+            print("Word is not in vocabulary:", word)
+            return False
+    return True
 def similarity(tag):
     tag = tag.split()
-    score = 0
-    lb = ""
-    with open("data.txt") as f:
-        for line in f:
-            line = line.split(":")
-            str = line[1].split()
-            t = line[0].lower()
-            t = t.split()
-            sim = word_vectors.n_similarity(tag, t)
-            if(sim > 0.6 and sim > score):
-                lb = t
-                score = sim
-            for i in str:
-                i = i.lower()
-                i = i.split("-")
-                sim = word_vectors.n_similarity(tag, i)
-                #print("{:.4f}".format(sim))
+    if get_unmatching_word(tag) == False:
+        return ' '.join(tag)
+    else:
+        score = 0
+        lb = ""
+        with open("data.txt") as f:
+            for line in f:
+                line = line.split(":")
+                str = line[1].split()
+                t = line[0].lower()
+                t = t.split()
+                sim = word_vectors.n_similarity(tag, t)
                 if(sim > 0.6 and sim > score):
                     lb = t
                     score = sim
-    return ''.join(lb)
+                for i in str:
+                    i = i.lower()
+                    i = i.split("-")
+                    sim = word_vectors.n_similarity(tag, i)
+                    #print("{:.4f}".format(sim))
+                    if(sim > 0.6 and sim > score):
+                        lb = t
+                        score = sim
+        return ' '.join(lb)
+
 r = StrictRedis(host='localhost', port=6379, db=0)
 def combineAspect_1(Aspects, Value):
         tag_temp = []
