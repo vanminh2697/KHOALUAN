@@ -70,6 +70,7 @@ function send(){
 			}
 			else{
 				var result = JSON.parse(server);
+				console.log(result)
 				var e = document.getElementById("inputGroupSelect01");
 				var lang = e.options[e.selectedIndex].value;
 				console.log(lang)

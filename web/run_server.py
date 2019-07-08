@@ -49,6 +49,7 @@ def similarity(tag):
 
 r = StrictRedis(host='localhost', port=6379, db=0)
 def combineAspect_1(Aspects, Value):
+        print("-----------")
         tag_temp = []
         tag_value = []
         check = 0
