@@ -55,9 +55,9 @@ def combineAspect_1(Aspects, Value):
         check = 0
         for i in range(len(Aspects)):
             aspect = Aspects[i].lower()
-            #print(aspect)
+            # print(aspect)
             tag = similarity(aspect)
-            #print(tag)
+            # print(tag)
             if(i == 0):
                 tag_temp.append(tag)
                 tag_value.append(Value[i])
@@ -169,10 +169,14 @@ def caculation(keys,results):
                             Value[i][2] += 1
                             Value[i][3] += 1      
     json_results = [] 
+    print("Aspect Minh") 
+    print(Aspects)
     Aspects = [element.upper() for element in Aspects]
     Aspects , Value = combineAspect_1(Aspects,Value)
+    print("Aspect Trang")
     print(Aspects)
     n = len(Aspects)
+    Aspects = [element.upper() for element in Aspects]
     for i in range(n):
         x = round((Value[i][0]/Value[i][3])*100)
         y = round((Value[i][1]/Value[i][3])*100)
@@ -216,7 +220,7 @@ def index():
     # save seq to database
     if request.method == "POST":
         text = request.form["data"]
-        print(text)
+        # print(text)
         if text != '':
             k = text.split(". ")    
             for i in k:
