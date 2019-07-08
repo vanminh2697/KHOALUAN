@@ -171,13 +171,14 @@ def caculation(keys,results):
     json_results = [] 
     Aspects = [element.upper() for element in Aspects]
     Aspects , Value = combineAspect_1(Aspects,Value)
+    print(Aspects)
+    n = len(Aspects)
     for i in range(n):
-        if Aspects[i] != "null":
-            x = round((Value[i][0]/Value[i][3])*100)
-            y = round((Value[i][1]/Value[i][3])*100)
-            z = round((Value[i][2]/Value[i][3])*100)
-            temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z , "Total": Value[i][3]}
-            json_results.append(temp)
+        x = round((Value[i][0]/Value[i][3])*100)
+        y = round((Value[i][1]/Value[i][3])*100)
+        z = round((Value[i][2]/Value[i][3])*100)
+        temp = {"aspect": Aspects[i], "POS": y , "NEG": x , "NEU": z , "Total": Value[i][3]}
+        json_results.append(temp)
     return json_results
 
 def pre_process(str):
