@@ -45,6 +45,8 @@ def similarity(tag):
                     if(sim > 0.6 and sim > score):
                         lb = t
                         score = sim
+        if ' '.join(lb) == "":
+            return ' '.join(tag)           
         return ' '.join(lb)
 
 r = StrictRedis(host='localhost', port=6379, db=0)
@@ -75,6 +77,8 @@ def combineAspect_1(Aspects, Value):
                 if (check == 0):
                     tag_temp.append(tag)
                     tag_value.append(Value[i])
+                else: 
+                    check = 0
         return (tag_temp, tag_value)
 # def combineAspect(Aspects, Value):
 #     listEng = ["es","s"]
@@ -220,8 +224,9 @@ def index():
     # save seq to database
     if request.method == "POST":
         text = request.form["data"]
-        # print(text)
+        print("data" + text)
         if text != '':
+            print("hihi " + text)
             k = text.split(". ")    
             for i in k:
                 z = pre_process(i)
@@ -232,7 +237,9 @@ def index():
                         if(j != " "):
                             A.append(j.split(' '))
                 else:
-                    A.append(z[0].split(' '))
+                    if(len(z)==1):
+                        print(z)
+                        A.append(z[0].split(' '))
                 # A.append(z.split(' '))
                 
             for i in A:

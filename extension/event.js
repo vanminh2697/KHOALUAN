@@ -6,7 +6,12 @@ chrome.runtime.onMessage.addListener(function(message){
 			var url = message.tabCurrent;
 			if(url == "") return null;
 			var string = regexURL(url);
-			return "/"+string[3] + text + string[5];
+			var h = 4
+			for(i = 0; i < string.length; i++){
+				if(string [i] == "dp")
+					h = i
+			}
+			return "/"+ text + string[h + 1];
 		}
 		function regexURL(url){
 			return url.split(new RegExp('/'));
@@ -53,9 +58,11 @@ chrome.runtime.onMessage.addListener(function(message){
 		// getImageAndName(getLink());
 	    async function getData(urlE){
 	    	if(urlE != null){
-		    	while(className == 'a-last'){
+	    		var temp = 0;
+		    	while(temp <= 10){
+		    		temp = temp + 1;
 		    		const url = host + urlE;
-		    		console.log(url);
+		    		console.log(temp);
 		    		const output = await getHTML(url);
 		    		var parser = new DOMParser();
 				    var html = parser.parseFromString(output, "text/html");
@@ -70,7 +77,7 @@ chrome.runtime.onMessage.addListener(function(message){
 				    if(className == 'a-disabled a-last') break;
 				    urlE = html.querySelectorAll('li.a-last')[0].lastChild.getAttribute("href");
 				}
-				console.log(comments);
+				// console.log(comments);
 				return comments;
 			}else{
 				console.log("không tìm thấy sản phẩm");
@@ -87,12 +94,14 @@ chrome.runtime.onMessage.addListener(function(message){
 				'action': 'hehe',
 				'data' : 'done'
 			})
+			
+			comments =comments.replace(/[&\s]/g, ' ')
 			var req = new XMLHttpRequest();
 			req.open('POST', 'http://localhost:5000/', false);
-			req.setRequestHeader('content-type', 'application/x-www-form-urlencoded;charset=UTF-8');
+			req.setRequestHeader('content-type','application/x-www-form-urlencoded;charset=UTF-8');
 			req.send("data=" + comments);
 			var text = req.responseText
-			console.log(text)
+			console.log(comments)
 			comments = ""
 			chrome.runtime.sendMessage({
 				'action': 'hihi',

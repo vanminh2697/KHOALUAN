@@ -1,4 +1,4 @@
-Laptop: asus dell hp toshiba apple asus 
+Laptop: computer lap
 Display: touch-screen  visual-resolution screen 
 KeyBoard: keys power-button delete-key backlit-keyboard 
 Mouse: mouse-pad touch-pad the-buttons-on-it
@@ -16,3 +16,8 @@ OS: Mac-Os windows-10
 Warranty: warranty guarantee policy
 Support:  customer-service repair-service product-support replacement-policy the-staff tablet-mode fingerprint-feature 
 Price: price
+Motherboard: bios mainboard
+Battery: battery-life
+Hardware:
+Shipping: delivery
+Company: asus dell hp toshiba apple asus 

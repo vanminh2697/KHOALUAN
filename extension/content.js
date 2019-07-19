@@ -41,7 +41,9 @@ function getT(){
 var tableShow = ""
 var tableHidden =""
 var listAspect =["LAPTOP","DISPLAY","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISK","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE"]
-
+var e = document.getElementById("inputGroupSelect01");
+var lang = e.options[e.selectedIndex].value;
+var result = ""
 function isListAspect(name){
 	console.log(name)
 	for (var i = 0;i<listAspect.length; i++){
@@ -64,29 +66,39 @@ function send(){
 		if (message.action == 'hihi'){
 			var server = message.data ;
 			console.log(message.action)
-			console.log(server)
-			if(server == "Can not find reviews from Web page"){
-				text = "<dt>"+server+"</dt>";
+			var e = document.getElementById("inputGroupSelect01");
+			lang = e.options[e.selectedIndex].value;
+			if(server === "Can not find reviews from Web page"){
+				console.log("serve " + server)
+				console.log("lang server " + lang)
+				document.getElementById("error").innerHTML = arrLang[lang][server] ;
 			}
 			else{
-				var result = JSON.parse(server);
+				result = JSON.parse(server);
 				console.log(result)
+				document.getElementById('click').style.visibility='hidden'
 				var e = document.getElementById("inputGroupSelect01");
-				var lang = e.options[e.selectedIndex].value;
-				console.log(lang)
+				lang = e.options[e.selectedIndex].value;
 				for(var i = 0;i<result.length; i++){
 					x = isListAspect(result[i].aspect)
 					if(x === true){
-						console.log("lang " + arrLang[lang][result[i].aspect])
 						tableShow +="<tr><td " + "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 					}
 					else {
 						tableHidden +="<tr><td>"+result[i].aspect+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 					}
 				}
+				if(tableHidden ==""){
+					document.getElementById("show").innerHTML = tableShow ;
+					document.getElementById('btnshow').style.visibility='hidden';
+				}else 
+				{
+					document.getElementById("show").innerHTML = tableShow ;
+					document.getElementById('btnshow').style.visibility='visible';
+				}
+				document.getElementById("error").style.display = "none" ;
 			}
-			document.getElementById('btnshow').style.visibility='visible';
-			document.getElementById("show").innerHTML = tableShow ;
+			
 			document.getElementById("loader").style.display = "none";
 			document.getElementById("imf").innerHTML = "" ;
 		}
@@ -98,8 +110,20 @@ document.getElementById("btnshow").onclick = function(){
 	document.getElementById("show1").innerHTML = tableHidden;
 }
 document.getElementById("btn_hidden").onclick = function(){
+	lang = e.options[e.selectedIndex].value;
+	// if(lang === "ja"){
+	// 	tableShow = tableShow_jp
+	// }
+	console.log("lang hidden " + lang)
+	tableShow = ""
+	for(var i = 0;i<result.length; i++){
+		x = isListAspect(result[i].aspect)
+		if(x === true){
+			tableShow +="<tr><td " + "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
+		}
+	}
 	document.getElementById("show").innerHTML = tableShow ;
-	document.getElementById("show1").innerHTML = "" ;
+	document.getElementById("show1").innerHTML = "" ;	
 	document.getElementById('btnshow').style.visibility='visible';
 	document.getElementById('btn_hidden').style.visibility='hidden';
 }
