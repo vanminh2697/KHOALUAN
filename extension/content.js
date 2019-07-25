@@ -40,7 +40,7 @@ function getT(){
 }
 var tableShow = ""
 var tableHidden =""
-var listAspect =["LAPTOP","DISPLAY","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISK","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE"]
+var listAspect =["LAPTOP","DISPLAY","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISK","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE","BATTERY"]
 var e = document.getElementById("inputGroupSelect01");
 var lang = e.options[e.selectedIndex].value;
 var result = ""

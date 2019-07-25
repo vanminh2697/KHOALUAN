@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="style.css">
 	<script src="content.js" type="text/javascript" charset="utf-8" async defer></script>
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	
 </head>
 
 <body style="background-color: #f2ffff; width: 600px; height: 200px">
@@ -34,7 +35,7 @@
 		<div class="timkiem " style="float:left;">
 			<input id="input" type="text" name="search" placeholder="Search.." key="search" class="lang">
 		</div>
-		<div class="sapxep " style="float:right;">
+		<div class="sapxep" style="float:right;">
 			<button class="sapxepbtn lang button" key="low">Low to high</button>
 			<div class="sapxep-content">
 				<a id="de_pos" key="positive" class="lang">Positive</a>
@@ -50,14 +51,14 @@
 				<a id="in_neg" key="negative" class="lang">Negative</a>
 			</div>
 		</div>
-		<table id="result" class="table table-striped">
+		<table id="result" class="table">
 			<thead>
 				<tr>
-					<th key="aspect" class="lang">Aspect</th>
-					<th key="positive" class="lang">Positive</th>
-					<th key="negative" class="lang">Negative</th>
-					<th key="neutral" class="lang">Neutral</th>
-					<th key="total" class="lang">Total</th>
+					<th key="aspect" class="lang" title="Elements and attributes of the computer">Aspect</th>
+					<th key="positive" class="lang" title="The percentage of total user reviews is good for the aspect">Positive</th>
+					<th key="negative" class="lang" title="The percentage of total user reviews is not good for the aspect">Negative</th>
+					<th key="neutral" class="lang" title="The percentage of total user reviews is normal for the aspect">Neutral</th>
+					<th key="total" class="lang" title="The total number of user reviews speaks about one aspect">Total</th>
 				</tr>
 			</thead>
 			<tbody id="show">
@@ -73,7 +74,7 @@
 		<div class="col text-center">
 			<button id="click" style="float:center;" key="start" class="lang button">Start</button>
 		</div>
-		
+		<div id='toggle' title = "This is the tutorial!" data-toggle = "tooltip"></div>
 		<br>
 		<div class="footer">
 			<div id="loader" style="height: 30px; width: 30px"></div>

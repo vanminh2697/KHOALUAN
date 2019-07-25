@@ -224,7 +224,7 @@ def index():
     # save seq to database
     if request.method == "POST":
         text = request.form["data"]
-        print("data" + text)
+        print("data = " + text)
         if text != '':
             print("hihi " + text)
             k = text.split(". ")    
