@@ -270,3 +270,5 @@ def index():
             return json.dumps(json_results)
         else: 
             return "Can not find reviews from Web page"
+    else: 
+            return "Can not find reviews from Web page"

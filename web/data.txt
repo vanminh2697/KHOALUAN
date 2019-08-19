@@ -1,5 +1,5 @@
-Laptop: computer lap
-Display: touch-screen  visual-resolution screen 
+Laptop: computer lap desktop design netbook notebook macbook quality 
+Display: touch-screen  visual-resolution screen LED-backlit
 KeyBoard: keys power-button delete-key backlit-keyboard 
 Mouse: mouse-pad touch-pad the-buttons-on-it
 CPU: processor works performs speed runs system
@@ -8,16 +8,16 @@ Ports: USB HDMI VGA card-reader Firewire SD DVI Thunderbolt
 Memory: ram 16-gb-of-ram disk-space 
 Power Supply: charger charger-unit power-supply-cord adapter
 Optical Drives: CD DVD DVD-drive disc-drive DVD-burner
-Graphics: graphics-card video card graphics-chip
-Hard disk: hard-drive
-Multimedia Devices: sound audio microphone camera webcam speakers headphone
-Software: microsoft art-program office-software master-program system-software Office iWork Mac-version-of-Microsoft-Office word-processor Word PowerPoint art-program 
-OS: Mac-Os windows-10 
+Graphics: graphics video card graphics-chip
+Hard disc: hard-drive storage capacity HD HDD SSD
+Multimedia Devices: sound audio microphone camera webcam speakers headphone volume-wheel
+Software: microsoft art-program office-software master-program system-software Office iWork Mac-version-of-Microsoft-Office word-processor Word PowerPoint art-program firewall
+OS: Mac-Os windows-10 windows
 Warranty: warranty guarantee policy
-Support:  customer-service repair-service product-support replacement-policy the-staff tablet-mode fingerprint-feature 
-Price: price
-Motherboard: bios mainboard
+Support:  customer-service repair-service product-support replacement-policy the-staff tablet-mode fingerprint-feature tech-support features
+Price: price cheap expensive cost
+Motherboard: bios mainboard boot-time
 Battery: battery-life
 Hardware:
 Shipping: delivery
-Company: asus dell hp toshiba apple asus 
+Company: asus dell hp toshiba apple asus acer

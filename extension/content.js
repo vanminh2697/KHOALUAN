@@ -40,10 +40,35 @@ function getT(){
 }
 var tableShow = ""
 var tableHidden =""
-var listAspect =["LAPTOP","DISPLAY","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISK","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE","BATTERY"]
+var listAspect =["COMPANY","SHIPPING","HARDWARE","LAPTOP","DISPLAY","MORTHERBOARD","KEYBOARD","MOUSE","CPU","FAN COOLING","PORTS","POWER SUPPLY","OPTICAL DRIVES","GRAPHICS","HARD DISC","MULTIMEDIA DEVICES","SOFTWARE","OS","WARRANTY","SUPPORT","PRICE","BATTERY","HARD DISC","MEMORY"]
 var e = document.getElementById("inputGroupSelect01");
 var lang = e.options[e.selectedIndex].value;
 var result = ""
+var dict = {
+	"LAPTOP": "computer, notebook, macbook", 
+	"DISPLAY": "monitor,screen,pixels",
+	"KEYBOARD": "keys,numpad,keyboard",
+	"MOUSE": "touchpad",
+	"CPU": "processor,system",
+	"FAN COOLING": "fan, cooling system, heat sink",
+	"PORTS": "USB, HDMI, VGA, card reader",
+	"MEMORY": "ram",
+	"POWER SUPPLY": "charger, adapter",
+	"OPTICAL DRIVES": "CD, DVD",
+	"GRAPHICS": "graphics chip",
+	"HARD DISC": "hard drive, storage",
+	"MULTIMEDIA DEVICES": "sound, microphone, camera",
+	"SOFTWARE": "microsoft, Office, program",
+	"OS": "Mac Os, windows",
+	"WARRANTY": "",
+	"SUPPORT":  "",
+	"PRICE": "cheap, expensive, cost",
+	"MORTHERBOARD": "bios, mainboard",
+	"BATTERY": "battery life",
+	"HARDWARE":"",
+	"SHIPPING": "",
+	"COMPANY": "asus, dell, hp, toshiba, apple, asus, acer",
+}
 function isListAspect(name){
 	console.log(name)
 	for (var i = 0;i<listAspect.length; i++){
@@ -55,6 +80,7 @@ function isListAspect(name){
 	}
 	return false
 }
+
 function send(){
 	var x = chrome.runtime.sendMessage({
 		'action': 'submit the form',
@@ -82,7 +108,8 @@ function send(){
 				for(var i = 0;i<result.length; i++){
 					x = isListAspect(result[i].aspect)
 					if(x === true){
-						tableShow +="<tr><td " + "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
+						var title = "title=" + "'"+dict[result[i].aspect] + "'";
+						tableShow +="<tr><td "+ title+"class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 					}
 					else {
 						tableHidden +="<tr><td>"+result[i].aspect+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
@@ -119,7 +146,8 @@ document.getElementById("btn_hidden").onclick = function(){
 	for(var i = 0;i<result.length; i++){
 		x = isListAspect(result[i].aspect)
 		if(x === true){
-			tableShow +="<tr><td " + "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
+			var title = "title=" + "'"+dict[result[i].aspect] + "'";
+			tableShow +="<tr><td " + title+ "class='lang'" +"key ='"+ result[i].aspect+"'>"+arrLang[lang][result[i].aspect]+"<td>"+result[i].POS+"%<td>"+result[i].NEG+"%</td><td>"+result[i].NEU+"%</td><td>"+result[i].Total+"</td></tr>";
 		}
 	}
 	document.getElementById("show").innerHTML = tableShow ;
